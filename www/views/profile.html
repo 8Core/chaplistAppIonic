@@ -11,11 +11,11 @@
             <a ng-click = "facebookPost()" class="tab-item">
                 <i class="icon ion-android-create"></i> Post
             </a>
-            <a ui-sref="app.gallery" class="tab-item">
-                <i class="icon ion-images"></i> Photos
+            <a ui-sref="app.fav" class="tab-item">
+                <i class="icon ion-heart assertive"></i> Favoritos
             </a>
         </div>
-        <h4 class="content padding double-padding-x">Amigos que utilizan la Chaplist</h4>
+        <h4 class="content padding double-padding-x">Amigos que utilizan ChapList</h4>
         <div class="list animate-fade-slide-in-right" ng-repeat="friend in facebookFriends">
             <a class="item item-avatar item-icon-right">
                 <img ng-src="{{friend.picture.data.url}}">

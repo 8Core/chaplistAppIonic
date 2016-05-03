@@ -16,9 +16,9 @@
         <ion-nav-view>
             <ion-tabs ng-show="uiRouterState.current.name == 'app.fav' || uiRouterState.current.name == 'app.offer' || uiRouterState.current.name == 'app.search'" class="tabs-icon-top tabs-positive">
                 <ion-tab title="Ofertas" icon="ion-ios-cart" ui-sref="app.offer"></ion-tab>
-                <ion-tab title="Favoritos" icon="ion-star" ui-sref="app.fav"></ion-tab>
-                <ion-tab title="Home" icon="ion-home" ui-sref="app.home"></ion-tab>
+                <ion-tab title="Favoritos" icon="ion-heart" ui-sref="app.fav"></ion-tab>
                 <ion-tab title="Buscar" icon="ion-search" ui-sref="app.search"></ion-tab>
+                <ion-tab title="Home" icon="ion-home" ui-sref="app.home"></ion-tab>
             </ion-tabs>
         </ion-nav-view>
     </ion-side-menu-content>
@@ -26,7 +26,7 @@
         <ion-header-bar class="dark-bg expanded">
             <span class="avatar" style="background: url('img/chapIcon.png'); background-size: cover;"></span>
             <br>
-            <h2>Chaplist</h2>
+            <h2>ChapList</h2>
         </ion-header-bar>
         <ion-content class="stable-bg has-expanded-header">
             <ion-list>
@@ -34,7 +34,10 @@
                     <i class="icon ion-ios-cart"></i> Ofertas
                 </ion-item>
                 <ion-item nav-clear menu-close ui-sref="app.fav">
-                    <i class="icon ion-heart"></i> Mis Favoritos
+                    <i class="icon ion-heart"></i> Favoritos
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.search">
+                    <i class="icon ion-search"></i> Buscar
                 </ion-item>
                 <ion-item nav-clear menu-close ng-click="facebook()">
                     <i class="icon ion-social-facebook"></i> Facebook
@@ -42,11 +45,11 @@
                 <ion-item nav-clear menu-close ui-sref="app.map">
                     <i class="icon ion-ios-location"></i> Mapa
                 </ion-item>
-                <ion-item nav-clear menu-close ui-sref="app.about">
-                    <i class="icon ion-gear-a"></i> Acerca
-                </ion-item>
                 <ion-item nav-clear menu-close ui-sref="app.home">
                     <i class="icon ion-home"></i> Home
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.about">
+                    <i class="icon ion-gear-a"></i> Acerca
                 </ion-item>
             </ion-list>
         </ion-content>
