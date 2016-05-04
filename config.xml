@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
-<widget id="com.ionicframework.chaplist21042016" version="1.8.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.chaplist21042016" version="1.9.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
   <meta content="default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos;; script-src * &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;" http-equiv="Content-Security-Policy"/>
   <name>Chaplist</name>
@@ -12,6 +12,7 @@
         </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <preference name="Fullscreen" value="true" />
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
@@ -19,7 +20,7 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="5000"/>
-  <preference name="StatusBarOverlaysWebView" value="false"/>
+  <preference name="StatusBarOverlaysWebView" value="true"/>
   <preference name="StatusBarBackgroundColor" value="#1565C0"/>
   <preference name="StatusBarStyle" value="lightcontent"/>
   <preference name="FadeSplashScreen" value="false"/>

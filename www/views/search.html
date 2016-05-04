@@ -4,8 +4,15 @@
             <label class="item item-input">
                 <input type="text" name="value" value="" placeholder="Buscar" ng-model="value">
             </label>
-            <button class="button button-positive icon-right ion-search" ng-click="getAllOffers(value)"> </button>
+            <button class="button button-clear" ng-click="getAllOffers(value)"><i class="icon ion-search calm placeholder-icon"></i></button>
         </div>
+<!--  <label class="item item-input">
+    <i class="icon ion-search placeholder-icon"></i>
+    <input type="text" name="value" value="" placeholder="Buscar" ng-model="value">
+    <button class="button button-positive icon-right ion-search" ng-click="getAllOffers(value)"> </button>
+  </label>-->
+
+
         <ion-scroll zooming="false" direction="y" style="height: 100%;">
             <ion-refresher pulling-text="Cargando busqueda" on-refresh="reload()"></ion-refresher>
             <div class="list animate-fade-slide-in-right" ng-last-repeat="mylist" ng-repeat="product in products">
