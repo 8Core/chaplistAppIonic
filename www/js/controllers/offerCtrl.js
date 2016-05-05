@@ -90,6 +90,7 @@ angular.module('offerCtrl', [])
 
         $scope.reload = function () {
             $rootScope.products = [];
+            $scope.fin = false;
             getProducts();
         };
 
@@ -104,6 +105,9 @@ angular.module('offerCtrl', [])
 
         //monitor para scroll de páginación
         $scope.$on('loadProducts', function (_, data) {
+            if(data.length <= 0 ){
+                $scope.fin = true;
+            }
             data.forEach(function (b) {
                 $rootScope.products.push({
                     ProductStore: b.ProductStore,
@@ -124,9 +128,11 @@ angular.module('offerCtrl', [])
             Función para solicitar nueva tanda de productos
         */
         $scope.loadMore = function () {
-            factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
+            if(!$scope.fin){
+             factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
                 $rootScope.$broadcast('loadProducts', data);
             });
+            }
         };
         /*
             Función para colocar un producto para su detalle
