@@ -6,7 +6,7 @@
 </style>
 <ion-view view-title="Detalle">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-        <div ng-if="$parent.isOnline()" class="hero has-mask slide-up" style="background-image: url(http://res.cloudinary.com/oktacore/w_250,h_250/{{productDetail.ProductStore.image}});">
+        <div ng-if="$parent.isOnline()" class="hero has-mask slide-up" style="background-image: url(http://res.cloudinary.com/oktacore/w_250,h_250,c_pad/{{productDetail.ProductStore.image}});">
             <div class="content">
                 <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-heart button-{{fav}} pull-right text-white" ng-click="addFavorite(productDetail)"></button>
                 <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-android-people button-light pull-right text-white" ng-click="$parent.shareProduct(productDetail)"></button>
