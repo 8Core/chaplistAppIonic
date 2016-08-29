@@ -145,7 +145,7 @@ angular.module('appCtrl', [])
     }
 })
 
-.controller('HomeCtrl', function ($ionicPlatform, $scope, $timeout, $state, $ionicLoading, ionicMaterialInk, FacebookFactory, ConnectivityMonitor, ionicMaterialMotion, factory, offerFactory, $ionicSlideBoxDelegate, $ionicPlatform) {
+.controller('HomeCtrl', function ($ionicPlatform, $scope, $timeout, $state, $ionicLoading, ionicMaterialInk, FacebookFactory, ConnectivityMonitor, ionicMaterialMotion, factory, offerFactory, $ionicSlideBoxDelegate) {
 
     $scope.$parent.clearFabs();
     $scope.$on('ngLastRepeat.mylist', function (e) {

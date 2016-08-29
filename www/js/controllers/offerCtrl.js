@@ -1,6 +1,6 @@
 angular.module('offerCtrl', [])
 
-.controller('OfferCtrl', function ($scope, $state, $ionicPopup, $timeout, ionicMaterialMotion, ionicMaterialInk, FacebookFactory, factory, $ionicLoading) {
+    .controller('OfferCtrl', function ($scope, $state, $ionicPopup, $timeout, ionicMaterialMotion, ionicMaterialInk, FacebookFactory, factory, $ionicLoading) {
 
         $scope.$parent.showHeader();
         $scope.$parent.clearFabs();
@@ -105,7 +105,7 @@ angular.module('offerCtrl', [])
 
         //monitor para scroll de páginación
         $scope.$on('loadProducts', function (_, data) {
-            if(data.length <= 0 ){
+            if (data.length <= 0) {
                 $scope.fin = true;
             }
             data.forEach(function (b) {
@@ -128,21 +128,21 @@ angular.module('offerCtrl', [])
             Función para solicitar nueva tanda de productos
         */
         $scope.loadMore = function () {
-            if(!$scope.fin){
-             factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
-                $rootScope.$broadcast('loadProducts', data);
-            });
+            if (!$scope.fin) {
+                factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
+                    $rootScope.$broadcast('loadProducts', data);
+                });
             }
         };
         /*
             Función para colocar un producto para su detalle
         */
         $scope.setProductDetail = function (productDetail) {
-                offerFactory.setProductDetail(productDetail);
-            }
-            /*
-                Función para agregar a favoritos desde catalogo
-            */
+            offerFactory.setProductDetail(productDetail);
+        }
+        /*
+            Función para agregar a favoritos desde catalogo
+        */
         $scope.addFavorite = function (productDetail) {
             $ionicPopup.confirm({
                 title: 'Agregar favorito',
@@ -159,92 +159,105 @@ angular.module('offerCtrl', [])
 
     })
 
-.controller('DetalleCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory) {
+    .controller('DetalleCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory) {
 
-    $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.isExpanded = false;
-    $scope.$parent.setExpanded(false);
-    $scope.$parent.setHeaderFab(false);
-    $scope.fav = "light";
+        $scope.$parent.showHeader();
+        $scope.$parent.clearFabs();
+        $scope.isExpanded = false;
+        $scope.$parent.setExpanded(false);
+        $scope.$parent.setHeaderFab(false);
+        $scope.fav = "light";
 
-    // Set Motion
-    $timeout(function () {
-        ionicMaterialMotion.slideUp({
-            selector: '.slide-up'
-        });
-    }, 300);
-
-    // Set Ink
-    ionicMaterialInk.displayEffect();
-    //////////////////////////////////////////////////////////////////////////////////////
-    $scope.favorites = [];
-    $scope.productDetail = offerFactory.getProductDetail();
-
-    $scope.$watch('$viewContentLoaded', function () {
-        $scope.fav = offerFactory.addFavorite($scope.productDetail, false);
-    });
-
-    $scope.addFavorite = function (productDetail) {
-            $scope.fav = offerFactory.addFavorite(productDetail, true);
-        }
-        //PARA COMPARTIR UN PRODUCTO LA FUNCIÓN ESTÁ ESPECIFICADA EN EL CONTROLADOR PADRE appCtrl
-})
-
-.controller('FavCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state) {
-
-    $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.isExpanded = false;
-    $scope.$parent.setExpanded(false);
-    $scope.$parent.setHeaderFab(false);
-
-    $scope.$on('ngLastRepeat.mylist', function (e) {
+        // Set Motion
         $timeout(function () {
             ionicMaterialMotion.slideUp({
                 selector: '.slide-up'
             });
+        }, 300);
 
-            ionicMaterialMotion.fadeSlideInRight({
-                startVelocity: 3000
-            });
+        // Set Ink
+        ionicMaterialInk.displayEffect();
+        //////////////////////////////////////////////////////////////////////////////////////
+        $scope.favorites = [];
+        $scope.productDetail = offerFactory.getProductDetail();
 
-        }, 0); // No timeout delay necessary.
-    });
+        $scope.$watch('$viewContentLoaded', function () {
+            $scope.fav = offerFactory.addFavorite($scope.productDetail, false);
+        });
 
-    // Set Ink
-    ionicMaterialInk.displayEffect();
-    ////////////////////////////////////////////////////////////
-    $scope.favorites = [];
-    getFavorites();
+        $scope.addFavorite = function (productDetail) {
+            $scope.fav = offerFactory.addFavorite(productDetail, true);
+        }
+        //PARA COMPARTIR UN PRODUCTO LA FUNCIÓN ESTÁ ESPECIFICADA EN EL CONTROLADOR PADRE appCtrl
 
-    $scope.reload = function () {
+
+        // Area de comentarios
+
+        $scope.comments = factory.getComments();// traer comentarios  de bd
+        
+        $scope.comment = {};
+        $scope.sendComment = function(productDetial,comment){
+            console.log(productDetial);
+            console.log($scope.comment.body);
+        }
+
+
+    })
+
+    .controller('FavCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state) {
+
+        $scope.$parent.showHeader();
+        $scope.$parent.clearFabs();
+        $scope.isExpanded = false;
+        $scope.$parent.setExpanded(false);
+        $scope.$parent.setHeaderFab(false);
+
+        $scope.$on('ngLastRepeat.mylist', function (e) {
+            $timeout(function () {
+                ionicMaterialMotion.slideUp({
+                    selector: '.slide-up'
+                });
+
+                ionicMaterialMotion.fadeSlideInRight({
+                    startVelocity: 3000
+                });
+
+            }, 0); // No timeout delay necessary.
+        });
+
+        // Set Ink
+        ionicMaterialInk.displayEffect();
+        ////////////////////////////////////////////////////////////
         $scope.favorites = [];
         getFavorites();
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.$broadcast('scroll.refreshComplete');
-    };
 
-    $scope.setProductDetail = function (productDetail) {
-        offerFactory.setProductDetail(productDetail);
-    }
+        $scope.reload = function () {
+            $scope.favorites = [];
+            getFavorites();
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$broadcast('scroll.refreshComplete');
+        };
 
-    $scope.deleteProductFav = function (product) {
-        $state.go('app.fav');
-        var index = offerFactory.removeFavorite(product);
-        if (index >= 0) {
-            $scope.favorites.splice(index, 1);
+        $scope.setProductDetail = function (productDetail) {
+            offerFactory.setProductDetail(productDetail);
         }
-    }
 
-    function getFavorites() {
-        offerFactory.getFavorites(function (res) {
-            $scope.favorites = res;
-        });
-    }
-})
+        $scope.deleteProductFav = function (product) {
+            $state.go('app.fav');
+            var index = offerFactory.removeFavorite(product);
+            if (index >= 0) {
+                $scope.favorites.splice(index, 1);
+            }
+        }
 
-.controller('BuscarCtrl', function ($scope, $rootScope, $timeout, $ionicFilterBar,factory) {
+        function getFavorites() {
+            offerFactory.getFavorites(function (res) {
+                $scope.favorites = res;
+            });
+        }
+    })
+
+    .controller('BuscarCtrl', function ($scope, $rootScope, $timeout, $ionicFilterBar, factory) {
         $timeout(function () {
             document.getElementById('fab-activity').classList.toggle('on');
         }, 300);
@@ -272,7 +285,7 @@ angular.module('offerCtrl', [])
         };
     })
 
-.controller('SearchCtrl', function ($scope, $timeout, $ionicScrollDelegate, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state) {
+    .controller('SearchCtrl', function ($scope, $timeout, $ionicScrollDelegate, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state) {
 
         $scope.$parent.showHeader();
         $scope.$parent.clearFabs();
@@ -342,15 +355,15 @@ angular.module('offerCtrl', [])
 
         $scope.getAllOffers = getAllOffers;
     })
-.controller('ShareCtrl', function ($scope, offerFactory) {
+    .controller('ShareCtrl', function ($scope, offerFactory) {
 
         $scope.productDetail = offerFactory.getProductDetail();
 
         $scope.OtherShare = function () {
 
-             window.plugins.socialsharing
-                .share($scope.productDetail.description+"\n Q."+$scope.productDetail.ProductStore.offerPrice+"\n https://res.cloudinary.com/oktacore/"+$scope.productDetail.ProductStore.image+" \n En: "+$scope.productDetail.name+"\n ",null, null,"Ofertas ChapList descargar en https://play.google.com/store/apps/details?id=com.ionicframework.chaplist21042016");
+            window.plugins.socialsharing
+                .share($scope.productDetail.description + "\n Q." + $scope.productDetail.ProductStore.offerPrice + "\n https://res.cloudinary.com/oktacore/" + $scope.productDetail.ProductStore.image + " \n En: " + $scope.productDetail.name + "\n ", null, null, "Ofertas ChapList descargar en https://play.google.com/store/apps/details?id=com.ionicframework.chaplist21042016");
 
         }
 
-})
+    })
