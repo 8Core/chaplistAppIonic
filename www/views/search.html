@@ -2,11 +2,21 @@
     <ion-content ng-class="{expanded:isExpanded}" ng-controller="SearchCtrl">
         <div class="bar bar-header item-input-inset">
             <label class="item item-input">
-                <input type="text" name="value" value="" placeholder="Buscar" ng-model="value">
+                <input type="text" name="value" value="" placeholder="Min" ng-model="value">
+                <input type="text" name="value" value="" placeholder="Max" ng-model="value">
             </label>
             <button class="button button-clear" ng-click="getAllOffers(value)"><i class="icon ion-search calm placeholder-icon"></i></button>
         </div>
-<!--  <label class="item item-input">
+        <label class="item item-input item-select"> 
+                <div class="input-label"> Tipo de busqueda </div> 
+                <select> 
+                    <option>Descuento</option> 
+                    <option selected>Precio</option> 
+                </select> 
+            </label>
+        </div>
+
+        <!--  <label class="item item-input">
     <i class="icon ion-search placeholder-icon"></i>
     <input type="text" name="value" value="" placeholder="Buscar" ng-model="value">
     <button class="button button-positive icon-right ion-search" ng-click="getAllOffers(value)"> </button>
@@ -17,7 +27,8 @@
             <ion-refresher pulling-text="Cargando busqueda" on-refresh="reload()"></ion-refresher>
             <div class="list animate-fade-slide-in-right" ng-last-repeat="mylist" ng-repeat="product in products">
                 <div class="item item-thumbnail-left" ng-click="setProductDetail(product)">
-                    <img style="border-radius: 0;" ng-if="$parent.isOnline()" ng-src="http://res.cloudinary.com/oktacore/w_50,h_50/{{product.image}}" ui-sref="app.detalle">
+                    <img style="border-radius: 0;" ng-if="$parent.isOnline()" ng-src="http://res.cloudinary.com/oktacore/w_50,h_50/{{product.image}}"
+                        ui-sref="app.detalle">
                     <img ng-if="$parent.isOffline()" ng-src="img/genericProduct.jpg" ui-sref="app.detalle">
                     <h2 ui-sref="app.detalle">{{product.description}}</h2>
                     <p ui-sref="app.detalle"> <b>{{product.name}}</b> <i class="icon ion-heart assertive"></i> {{product.likes}}<b> <i class ="icon ion-pricetag balanced"></i> Q.{{product.offerPrice}}</b>

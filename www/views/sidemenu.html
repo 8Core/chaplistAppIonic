@@ -21,10 +21,11 @@
         <ion-nav-view>
             <ion-tabs ng-show="uiRouterState.current.name == 'app.fav' || uiRouterState.current.name == 'app.offer' || uiRouterState.current.name == 'app.search'"
                 class="tabs-icon-top tabs-positive">
-                <ion-tab title="Ofertas" icon="ion-ios-cart" ui-sref="app.offer"></ion-tab>
+                <ion-tab title="Home" icon="ion-home" ui-sref="app.home"></ion-tab>
+                <ion-tab title="Ofertas" icon="ion-android-cart" ui-sref="app.offer"></ion-tab>
+                <ion-tab title="Categorias" icon="ion-social-buffer" ui-sref="app.offer"></ion-tab>
                 <ion-tab title="Favoritos" icon="ion-heart" ui-sref="app.fav"></ion-tab>
                 <ion-tab title="Buscar" icon="ion-search" ui-sref="app.search"></ion-tab>
-                <ion-tab title="Home" icon="ion-home" ui-sref="app.home"></ion-tab>
             </ion-tabs>
         </ion-nav-view>
     </ion-side-menu-content>
@@ -38,6 +39,9 @@
             <ion-list>
                 <ion-item nav-clear menu-close ui-sref="app.offer">
                     <i class="icon ion-ios-cart"></i> Ofertas
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.offer">
+                    <i class="icon ion-social-buffer"></i> Categorias
                 </ion-item>
                 <ion-item nav-clear menu-close ui-sref="app.fav">
                     <i class="icon ion-heart"></i> Favoritos
