@@ -8,11 +8,12 @@
     <ion-content ng-class="{expanded:$scope.isExpanded}">
         <div ng-if="$parent.isOnline()" class="hero has-mask slide-up" style="background-image: url(http://res.cloudinary.com/oktacore/w_250,h_250,c_pad/{{productDetail.ProductStore.image}});">
             <div class="content">
-                <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-heart button-{{fav}} pull-right text-white"
+                <button class="button button-clear flat waves-effect waves-button waves-light icon ion-heart button-{{fav}} pull-right text-white"
                     ng-click="addFavorite(productDetail)"></button>
-                <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-android-people button-light pull-right text-white"
+                <button class="button button-clear flat waves-effect waves-button waves-light icon ion-ios-browsers button-light pull-right text-white"></button>
+                <button class="button  button-clear flat waves-effect waves-button waves-light icon ion-android-people button-light pull-right text-white"
                     ng-click="$parent.shareProduct(productDetail)"></button>
-                <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-map button-energized pull-right text-white"
+                <button class="button button-clear flat waves-effect waves-button waves-light icon ion-map button-energized pull-right text-white"
                     ui-sref="app.map"></button>
             </div>
         </div>
@@ -20,6 +21,7 @@
             <div class="content">
                 <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-heart button-{{fav}} pull-right text-white"
                     ng-click="addFavorite(productDetail)"></button>
+                <button class="button button-clear flat waves-effect waves-button waves-light icon ion-ios-browsers button-light pull-right text-white"></button>
                 <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-android-people pull-right text-white"></button>
                 <button class="button button-large button-clear flat waves-effect waves-button waves-light icon ion-map pull-right text-white"
                     ui-sref="app.map"></button>
@@ -35,17 +37,17 @@
                 <div class="list">
                     <a class="item item-icon-left">
                         <h3><i class="icon ion-pricetag"> </i>Precio de oferta</h3>
-                        <span class="badge badge-balanced">Q.{{productDetail.ProductStore.offerPrice}}</span></a>
-                </div </p>
-                <h3 class="outline padding light inline img-rounded">
-                    <i class=""></i>
-                </h3>
-                <h3 class="outline padding balanced inline img-rounded">
-                    <i class="icon ion-android-chat dark"></i>
-                </h3>
-                <h3 class="outline padding balanced inline img-rounded">
-                    {{ productDetail.ProductStore.likes}} <i class="icon ion-star energized"></i>
-                </h3>
+                        <span class="badge badge-balanced">Q.{{productDetail.ProductStore.offerPrice}}</span>
+                    </a>
+                </div>
+
+                <div class="button-bar bar-clear">
+                    <a class="button button-clear"><i class="icon ion-star mute"></i></a>
+                    <a class="button button-clear"><i class="icon ion-star mute"></i></a>
+                    <a class="button button-clear"><i class="icon ion-star mute"></i></a>
+                    <a class="button button-clear"><i class="icon ion-star mute"></i></a>
+                    <a class="button button-clear"><i class="icon ion-star mute"></i></a>
+                </div>
         </div>
         <div class="list">
             <a class="item item-icon-left">
