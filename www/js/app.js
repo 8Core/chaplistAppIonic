@@ -142,6 +142,30 @@ angular.module('starter', ['ionic', 'ngCordova', 'appCtrl', 'offerCtrl', 'profil
                 }
             }
         })
+        .state('app.compare', {
+            url: '/compare',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/compare.html',
+                    controller: 'compareCtrl'
+                },
+                'fabContent': {
+                    template: ''
+                }
+            }
+        })
+        .state('app.category', {
+            url: '/category',
+            views: {
+                'menuContent': {
+                    templateUrl: 'views/category.html',
+                    controller: 'categoryCtrl'
+                },
+                'fabContent': {
+                    template: ''
+                }
+            }
+        })
         // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.when('', '/app/home');
     $urlRouterProvider.otherwise('/app/home');
