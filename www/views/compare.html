@@ -1,0 +1,51 @@
+<ion-view view-title="Compare">
+    <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in" style="background: url(img/FondoPantallas.jpg) center; background-size: cover;">
+        <div ng-if="products.length < 1" class="no-results" align="center">
+            <p>No existen productos en oferta</p>
+        </div>
+        <ion-refresher pulling-text="Recargado productos" on-refresh="reload()"></ion-refresher>
+        <div>
+            <div class="list half">
+                <!--<div class="card card-gallery item item-text-wrap" ng-repeat="product in products" ng-last-repeat="mylist" ng-if="$odd">
+                    <div align="center">
+                        <div class="ink stable-bg" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                            <h3 class="">Hasta {{ product.dateEnd | date:'dd MMMM yyyy' }}</h3>
+                            <img ng-if="$parent.isOnline()" class="full-image" ng-src="http://res.cloudinary.com/oktacore/w_250,h_250,c_pad,q_25/{{product.ProductStore.image}}">
+                            <img ng-if="$parent.isOffline()" class="full-image" src="img/genericProduct.jpg">
+                        </div>
+                        <div class="item tabs tabs-secondary tabs-icon-left">
+                            <a class="tab-item stable-bg energized" ng-click="addFavorite(product)">
+                                <i class="icon ion-star"></i> <b>{{product.ProductStore.likes}}</b>
+                            </a>
+                            <a class="tab-item stable-bg balanced-900" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                                <b><p>Q. {{product.ProductStore.offerPrice}}</p></b>
+                            </a>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="list half">
+                <!--<div class="card card-gallery item item-text-wrap" ng-repeat="product in products" ng-last-repeat="mylist" ng-if="$even">
+
+                    <div align="center">
+                        <div class="ink stable-bg" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                            <h3 class="">Hasta {{ product.dateEnd | date:'dd MMMM yyyy' }}</h3>
+                            <img ng-if="$parent.isOnline()" class="full-image" ng-src="http://res.cloudinary.com/oktacore/w_250,h_250,c_pad,q_50/{{product.ProductStore.image}}">
+                            <img ng-if="$parent.isOffline()" class="full-image" src="img/genericProduct.jpg">
+                        </div>
+                        <div class="item tabs tabs-secondary tabs-icon-left">
+                            <a class="tab-item stable-bg energized" ng-click="addFavorite(product)">
+                                <i class="icon ion-star"></i> <b>{{product.ProductStore.likes}}</b>
+                            </a>
+                            <a class="tab-item stable-bg balanced-900" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                                <b><p>Q. {{product.ProductStore.offerPrice}}</p></b>
+                            </a>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <ion-infinite-scroll on-infinite="loadMore()" ng-if="deviceReady">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>
