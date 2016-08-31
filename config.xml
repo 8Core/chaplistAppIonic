@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
 <widget id="com.ionicframework.chaplist21042016" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-
-  <meta content="default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos;; script-src * &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;" http-equiv="Content-Security-Policy"/>
+  <meta content="default-src *; style-src 'self' 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'" http-equiv="Content-Security-Policy"/>
   <name>Chaplist</name>
   <description>
             Aplicación para ofertas.
@@ -12,7 +10,7 @@
         </author>
   <content src="index.html"/>
   <access origin="*"/>
-  <preference name="Fullscreen" value="false" />
+  <preference name="Fullscreen" value="true"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
