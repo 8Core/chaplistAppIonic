@@ -1,6 +1,6 @@
 angular.module('offerFactory', [])
 
-.factory('offerFactory', function ($localStorage, ConnectivityMonitor, factory, $ionicPopup) {
+.factory('offerFactory', function ($localStorage, ConnectivityMonitor, factory, $ionicPopup, $http) {
     var comun = {};
     var productDetail = {};
 
@@ -75,26 +75,20 @@ angular.module('offerFactory', [])
             Función para obtener un arreglo con todos los favoritos
         */
     comun.getFavorites = function (callback) {
+
         var index = 0;
         var product = {};
+        var userID = $localStorage.facebookUserID;
+        return $http.get('http://192.9.200.24:8081/api/Chap/favorites/'+ userID)
         if (ConnectivityMonitor.ifOffline())
             return callback($localStorage.favorites);
 
         factory.getProductInOfferAPI(buildFavArray())
             .then(function (res) {
-                for (var i = 0; i < res.length; i++) {
-                    product = $localStorage.favorites.filter(function (obj) {
-                        return obj.id == res[i][0].id && obj.supermarketId == res[i][0].supermarketId;
-                    })[0];
-                    index = $localStorage.favorites.indexOf(product);
-                    product.ProductStore = res[i][0].ProductStore;
-                    product.description = res[i][0].description;
-                    product.updatedAt = res[i][0].updatedAt;
-                    product.createdAt = res[i][0].createdAt;
-
-                    $localStorage.favorites[index] = product;
-                }
-                callback($localStorage.favorites);
+                if (res.status = 200) {
+                    return(res.data.res);//.supermarkets;
+                } else
+                    return res.data.error;
             })
     }
 

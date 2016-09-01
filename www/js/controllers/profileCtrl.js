@@ -39,4 +39,5 @@ angular.module('profileCtrl', [])
             }
         FacebookFactory.postFacebook();
     }
+    
 })
