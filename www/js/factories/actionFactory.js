@@ -235,32 +235,37 @@ angular.module('actionFactory', [])
             Función para obtener los supermerdados del almacenamiento local
         */
         comun.getSupermarketsAPI = function () {
-                var result = {};
-                var deferred = {};
-                if (!comun.existsTokenAPI()) {
-                    ionicMessage('Advertencia', 'Esta app no tiene un token válido para el uso de la API supermarkets');
-                    return;
-                }
-                if (!ConnectivityMonitor.isOnline()) { //verifico conectividad a internet
-                    deferred = $q.defer();
-                    deferred.resolve($localStorage.supermarkets);
-                    return deferred.promise;
-                }
-                return $http.get('http://chaplist.oktacore.com/api/Chap/Supermarkets/' + getTokenAPI())
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
-                    .then(function (res) {
-                        if (res.status = 200) {
-                            result = transformToJson(res.data);
-                            compareToken(result.token);
-                            $localStorage.supermarkets = result.supermarkets;
-                            return result.supermarkets;
-                        } else
-                            return res.data.error;
-                    }, function (err) {
-                        comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                        return err;
-                    });
-            }
+
+            var result = {};
+            return $http.get('http://192.9.200.24:8081/api/Chap/Supermarkets/guatemala')
+                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
+                .then(function (res) {
+                    if (res.status = 200) {
+                        console.log (res.data);//.res;
+                    } else
+                        return res.data.error;
+                }, function (err) {
+                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                    return err;
+                });
+        }
+        /*
+            Función para obtener las categoria de los productos
+        */
+        comun.getCategoriasAPI = function () {
+            var result = {};
+            return $http.get('http://192.9.200.24:8081/api/Chap/categories/')
+                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
+                .then(function (res) {
+                    if (res.status = 200) {
+                        return res.data.res;//.res;
+                    } else
+                        return res.data.error;
+                }, function (err) {
+                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                    return err;
+                });
+        }
             /*
                 Función para obtener un top 5 de los favoritos en las ofertas vigentes
             */

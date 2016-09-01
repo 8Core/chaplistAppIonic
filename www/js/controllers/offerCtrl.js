@@ -48,6 +48,7 @@ angular.module('offerCtrl', [])
                 $scope.supermarkets = data;
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$broadcast('scroll.refreshComplete');
+
             });
         }
     })
@@ -204,13 +205,14 @@ angular.module('offerCtrl', [])
 
 })
 
-.controller('FavCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state) {
+.controller('FavCtrl', function ($scope, $timeout, ionicMaterialMotion, ionicMaterialInk, offerFactory, factory, $state, FacebookFactory) {
 
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+
 
     $scope.$on('ngLastRepeat.mylist', function (e) {
         $timeout(function () {
@@ -483,7 +485,7 @@ angular.module('offerCtrl', [])
 
         $ionicLoading.show({
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
-        });$ionicLoading.hide();
+        });//$ionicLoading.hide();
 
         // efects
         $scope.$on('ngLastRepeat.mylist', function (e) {
@@ -504,22 +506,22 @@ angular.module('offerCtrl', [])
         /*----------------------------------------------------------------------------------------*/
         /*----------------------------------------------------------------------------------------*/
         /*-------   ---------------------------------------------------------------------------------*/
-        $scope.supermarkets = [];
-        getSupermarketsAPI();
+        $scope.categorias = [];
+        getCategoriasAPI();
 
         $scope.reload = function () {
-            $scope.supermarkets = [];
-            getSupermarketsAPI();
+            $scope.categorias = [];
+            getCategoriasAPI();
         };
 
-        $scope.setSupermarketId = function (supermarketId, supermarketName) {
+        /*$scope.setSupermarketId = function (supermarketId, supermarketName) {
             factory.supermarketId = supermarketId;
             factory.supermarketName = supermarketName;
-        }
+        }*/
 
-        function getSupermarketsAPI() {
-            factory.getSupermarketsAPI().then(function (data) {
-                $scope.supermarkets = data;
+        function getCategoriasAPI() {
+            factory.getCategoriasAPI().then(function (data) {
+                $scope.categorias = data;
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$broadcast('scroll.refreshComplete');
             });

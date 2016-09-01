@@ -19,6 +19,7 @@ angular.module('facebookFactory', [])
                         .then(function (profileInfo) {
                             setFacebookToken(authResponse.accessToken);
                             setFacebookProfile(profileInfo);
+                            setUserID(authResponse.userID);
                             info.resolve(false);
                         }, function (error) {
                             info.reject(false);
@@ -153,6 +154,13 @@ angular.module('facebookFactory', [])
         */
         function setFacebookToken(newFacebookToken) {
             $localStorage.facebookToken = newFacebookToken;
+        }
+        function getUserID(newuserID) {
+            return $localStorage.facebookUserID;
+        }
+
+        function setUserID(newuserID) {
+            $localStorage.facebookUserID = newuserID;
         }
         /*
             Función que setea un nuevo token de facebook
