@@ -230,6 +230,7 @@ angular.module('appCtrl', [])
             $scope.topOffers = data;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.$broadcast('scroll.refreshComplete');
+            console.log($scope.topOffers);
         });
     }
 })

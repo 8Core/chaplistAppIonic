@@ -13,106 +13,45 @@ angular.module('actionFactory', [])
             Función para mostrar un mensaje sencillo en la pantalla
         */
         comun.ionicMessage = function (title, template) {
-            $ionicPopup.alert({
-                title: title,
-                template: template
-            });
-        }
-        /*
-            Función para verificar el token al primer inicio de la aplicación
-        */
+                $ionicPopup.alert({
+                    title: title,
+                    template: template
+                });
+            }
+            /*
+                Función para verificar el token al primer inicio de la aplicación
+            */
         comun.tokenVerified = function () {
-            var body = {};
-            var tokenAux = {};
-            var existe = false;
+                var body = {};
+                var tokenAux = {};
+                var existe = false;
 
-            if (comun.existsTokenAPI()) {
-                if (!existsSupermarketsLocal())
-                    comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
-                existe = true;
-                return;
-            }
+                if (comun.existsTokenAPI()) {
+                    if (!existsSupermarketsLocal())
+                        comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
+                    existe = true;
+                    return;
+                }
 
-            //de no existir un token se procede a solicitar uno a la API
-            body.packageName = packagaName;
-            body.secretKey = secretKey;
+                //de no existir un token se procede a solicitar uno a la API
+                body.packageName = packagaName;
+                body.secretKey = secretKey;
 
-            try {
-                body.uuid = $cordovaDevice.getUUID();
-            } catch (err) {
-                body.uuid = 'abcdefghijokl1234567'
-            }
-            return $http.post('http://chaplist.oktacore.com/api/Chap/tokenPetition', body)
-                //return $http.post('http://192.168.0.14:8080/api/Chap/tokenPetition', body)
-                .then(function (res) {
-                    tokenAux = res.data.replace('"', '').replace('"', '');
-                    if (res.status = 200 && tokenAux != 'null') {
-                        $localStorage.tokenAPI = tokenAux;
-                        $localStorage.favorites = [];
-                        if (!existe)
-                            comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
-                        return tokenAux;
-                    } else {
-                        comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                        return res;
-                    }
-                }, function (err) {
-                    return err;
-                });
-        }
-        /*
-            Función para obtener todas las tiendas de un supermercado específico
-        */
-        comun.getStoresAPI = function (supermarketId) {
-            var storesAux = [];
-            var deferred = {};
-            var result = {};
-            if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
-                comun.ionicMessage('Mensaje', 'Para mejorar la experiencia, utilize internet');
-                return;
-            }
-
-            return $http.post('http://chaplist.oktacore.com/api/Chap/tokenPetition', body)
-                //return $http.post('http://192.168.0.14:8080/api/Chap/tokenPetition', body)
-                .then(function (res) {
-                    tokenAux = res.data.replace('"', '').replace('"', '');
-                    if (res.status = 200 && tokenAux != 'null') {
-                        $localStorage.tokenAPI = tokenAux;
-                        $localStorage.favorites = [];
-                        if (!existe)
-                            comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
-                        return tokenAux;
-                    } else {
-                        comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                        return res;
-                    }
-                }, function (err) {
-                    return err;
-                });
-        }
-        /*
-            Función para obtener todas las tiendas de un supermercado específico
-        */
-        comun.getStoresAPI = function (supermarketId) {
-            var storesAux = [];
-            var deferred = {};
-            var result = {};
-
-            if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
-                deferred = $q.defer();
-                deferred.resolve([]);
-                return deferred.promise;
-            }
-
-            if (comun.existsTokenAPI())
-                return $http.get('http://chaplist.oktacore.com/api/Chap/Stores/' + supermarketId + '/' + getTokenAPI())
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Stores/' + supermarketId + '/' + getTokenAPI())
+                try {
+                    body.uuid = $cordovaDevice.getUUID();
+                } catch (err) {
+                    body.uuid = 'abcdefghijokl1234567'
+                }
+                return $http.post('http://chaplist.oktacore.com/api/Chap/tokenPetition', body)
+                    //return $http.post('http://192.168.0.14:8080/api/Chap/tokenPetition', body)
                     .then(function (res) {
-                        if (res.status = 200) {
-                            result = transformToJson(res.data);
-                            storesAux = result.stores;
-                            compareToken(result.token);
-                            return storesAux;
+                        tokenAux = res.data.replace('"', '').replace('"', '');
+                        if (res.status = 200 && tokenAux != 'null') {
+                            $localStorage.tokenAPI = tokenAux;
+                            $localStorage.favorites = [];
+                            if (!existe)
+                                comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
+                            return tokenAux;
                         } else {
                             comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
                             return res;
@@ -120,108 +59,169 @@ angular.module('actionFactory', [])
                     }, function (err) {
                         return err;
                     });
-            else
-                return [];
-        }
-        /*
-            Función para obtener los productos en oferta vigentes para un supermercado seleccionado
-        */
-        comun.getProductsInOfferAPI = function (offset) {
-            var deferred = {};
-            var result = {};
-            var products = [];
-
-            if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
-                deferred = $q.defer();
-                deferred.resolve([]);
-                return deferred.promise;
             }
+            /*
+                Función para obtener todas las tiendas de un supermercado específico
+            */
+        comun.getStoresAPI = function (supermarketId) {
+                var storesAux = [];
+                var deferred = {};
+                var result = {};
+                if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
+                    comun.ionicMessage('Mensaje', 'Para mejorar la experiencia, utilize internet');
+                    return;
+                }
 
-            if (comun.existsTokenAPI())
-                return $http.get('http://chaplist.oktacore.com/api/Chap/Offer/' + comun.supermarketId + '/' + offset + '/' + getTokenAPI())
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                return $http.post('http://chaplist.oktacore.com/api/Chap/tokenPetition', body)
+                    //return $http.post('http://192.168.0.14:8080/api/Chap/tokenPetition', body)
                     .then(function (res) {
-                        if (res.status = 200) {
-                            result = transformToJson(res.data);
-                            products = result.products;
-                            for (var i = 0; i < products.length; i++) {
-                                products[i].dateInit = products[0].dateInit;
-                                products[i].dateEnd = products[0].dateEnd;
-                                products[i].name = comun.supermarketName;
-                            }
-                            compareToken(result.token);
-                            return products;
+                        tokenAux = res.data.replace('"', '').replace('"', '');
+                        if (res.status = 200 && tokenAux != 'null') {
+                            $localStorage.tokenAPI = tokenAux;
+                            $localStorage.favorites = [];
+                            if (!existe)
+                                comun.getSupermarketsAPI(); //obtiene todos los supermercados actuales
+                            return tokenAux;
                         } else {
                             comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                            return [];
-                        }
-                    }, function (err) {
-                        return [];
-                    });
-            else
-                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-        }
-        /*
-            Función para obtener un producto específico en oferta
-        */
-        comun.getProductInOfferAPI = function (arrayProducts) {
-            var products = [];
-            var body = {
-                favProducts: arrayProducts
-            };
-            if (comun.existsTokenAPI())
-                return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/favproducts/' + getTokenAPI(), body)
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
-                    .then(function (res) {
-                        if (res.status = 200) {
-                            products = transformToJson(res.data);
-                            return products;
-                        } else {
-                            comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                            return [];
-                        }
-                    }, function (err) {
-                        return [];
-                    });
-            else
-                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-        }
-        /*
-            Función para agregar o remover likes de una aplicación
-        */
-        comun.addOrRemoveLikes = function (offerId, productId, type) {
-            var body = {};
-            var newOffer = {};
-            //En este caso no es necesario realizar una promesa ya que las funciones que llaman
-            //a esta funcionalidad no requieren un resultado de respuesta
-            if (ConnectivityMonitor.ifOffline()) //verifico conectividad a internet
-                return;
-
-            if (comun.existsTokenAPI()) {
-                body = {
-                    offerId: offerId,
-                    productId: productId,
-                    type: type
-                };
-                return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/likes/' + getTokenAPI(), body)
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
-                    .then(function (res) {
-                        if (res.status = 200) {
-                            newOffer = transformToJson(res.data);
-                            return newOffer;
-                        } else {
-                            comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                            return {};
+                            return res;
                         }
                     }, function (err) {
                         return err;
                     });
-            } else
-                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-        }
-        /*
-            Función que verifica si existe un token válido
-        */
+            }
+            /*
+                Función para obtener todas las tiendas de un supermercado específico
+            */
+        comun.getStoresAPI = function (supermarketId) {
+                var storesAux = [];
+                var deferred = {};
+                var result = {};
+
+                if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
+                    deferred = $q.defer();
+                    deferred.resolve([]);
+                    return deferred.promise;
+                }
+
+                if (comun.existsTokenAPI())
+                    return $http.get('http://chaplist.oktacore.com/api/Chap/Stores/' + supermarketId + '/' + getTokenAPI())
+                        //return $http.get('http://192.168.0.14:8080/api/Chap/Stores/' + supermarketId + '/' + getTokenAPI())
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                result = transformToJson(res.data);
+                                storesAux = result.stores;
+                                compareToken(result.token);
+                                return storesAux;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                                return res;
+                            }
+                        }, function (err) {
+                            return err;
+                        });
+                else
+                    return [];
+            }
+            /*
+                Función para obtener los productos en oferta vigentes para un supermercado seleccionado
+            */
+        comun.getProductsInOfferAPI = function (offset) {
+                var deferred = {};
+                var result = {};
+                var products = [];
+
+                if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
+                    deferred = $q.defer();
+                    deferred.resolve([]);
+                    return deferred.promise;
+                }
+
+                if (comun.existsTokenAPI())
+                    return $http.get('http://chaplist.oktacore.com/api/Chap/Offer/' + comun.supermarketId + '/' + offset + '/' + getTokenAPI())
+                        //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                result = transformToJson(res.data);
+                                products = result.products;
+                                for (var i = 0; i < products.length; i++) {
+                                    products[i].dateInit = products[0].dateInit;
+                                    products[i].dateEnd = products[0].dateEnd;
+                                    products[i].name = comun.supermarketName;
+                                }
+                                compareToken(result.token);
+                                return products;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                                return [];
+                            }
+                        }, function (err) {
+                            return [];
+                        });
+                else
+                    comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+            }
+            /*
+                Función para obtener un producto específico en oferta
+            */
+        comun.getProductInOfferAPI = function (arrayProducts) {
+                var products = [];
+                var body = {
+                    favProducts: arrayProducts
+                };
+                if (comun.existsTokenAPI())
+                    return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/favproducts/' + getTokenAPI(), body)
+                        //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                products = transformToJson(res.data);
+                                return products;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                                return [];
+                            }
+                        }, function (err) {
+                            return [];
+                        });
+                else
+                    comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+            }
+            /*
+                Función para agregar o remover likes de una aplicación
+            */
+        comun.addOrRemoveLikes = function (offerId, productId, type) {
+                var body = {};
+                var newOffer = {};
+                //En este caso no es necesario realizar una promesa ya que las funciones que llaman
+                //a esta funcionalidad no requieren un resultado de respuesta
+                if (ConnectivityMonitor.ifOffline()) //verifico conectividad a internet
+                    return;
+
+                if (comun.existsTokenAPI()) {
+                    body = {
+                        offerId: offerId,
+                        productId: productId,
+                        type: type
+                    };
+                    return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/likes/' + getTokenAPI(), body)
+                        //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                newOffer = transformToJson(res.data);
+                                return newOffer;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                                return {};
+                            }
+                        }, function (err) {
+                            return err;
+                        });
+                } else
+                    comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+            }
+            /*
+                Función que verifica si existe un token válido
+            */
         comun.existsTokenAPI = function () {
             if ($localStorage.hasOwnProperty("tokenAPI") === true)
                 return true;
@@ -235,79 +235,78 @@ angular.module('actionFactory', [])
             Función para obtener los supermerdados del almacenamiento local
         */
         comun.getSupermarketsAPI = function () {
-            var result = {};
-            var deferred = {};
-            if (!comun.existsTokenAPI()) {
-                ionicMessage('Advertencia', 'Esta app no tiene un token válido para el uso de la API supermarkets');
-                return;
-            }
-            if (!ConnectivityMonitor.isOnline()) { //verifico conectividad a internet
-                deferred = $q.defer();
-                deferred.resolve($localStorage.supermarkets);
-                return deferred.promise;
-            }
-            return $http.get('http://chaplist.oktacore.com/api/Chap/Supermarkets/' + getTokenAPI())
-                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
-                .then(function (res) {
-                    if (res.status = 200) {
-                        result = transformToJson(res.data);
-                        compareToken(result.token);
-                        $localStorage.supermarkets = result.supermarkets;
-                        return result.supermarkets;
-                    } else
-                        return res.data.error;
-                }, function (err) {
-                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                    return err;
-                });
-        }
-        /*
-            Función para obtener un top 5 de los favoritos en las ofertas vigentes
-        */
-        comun.getTopFavsAPI = function (callback) {
-            if (comun.topFavs.length < 1) {
-                comun.tokenVerified();
-            }
-            var result = [];
-            var deferred = {};
-            $timeout(function () {
+                var result = {};
+                var deferred = {};
                 if (!comun.existsTokenAPI()) {
-                    comun.ionicMessage('Bievenido', 'Te damos la bienvenida a ChapList');
+                    ionicMessage('Advertencia', 'Esta app no tiene un token válido para el uso de la API supermarkets');
                     return;
                 }
-            }, 5000);
-
-            if (!ConnectivityMonitor.isOnline()) { //verifico conectividad a internet
-                deferred = $q.defer();
-                deferred.resolve([]);
-                return deferred.promise;
+                if (!ConnectivityMonitor.isOnline()) { //verifico conectividad a internet
+                    deferred = $q.defer();
+                    deferred.resolve($localStorage.supermarkets);
+                    return deferred.promise;
+                }
+                return $http.get('http://chaplist.oktacore.com/api/Chap/Supermarkets/' + getTokenAPI())
+                    //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            result = transformToJson(res.data);
+                            compareToken(result.token);
+                            $localStorage.supermarkets = result.supermarkets;
+                            return result.supermarkets;
+                        } else
+                            return res.data.error;
+                    }, function (err) {
+                        comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                        return err;
+                    });
             }
-            return $http.get('http://chaplist.oktacore.com/api/Chap/Offer/topfavs/')
-                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
-                .then(function (res) {
-                    if (res.status = 200) {
-                        result = transformToJson(res.data);
-                        comun.topFavs = result;
-                        return result;
-                    } else
-                        return res.data.error;
-                }, function (err) {
-                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                    return err;
-                });
+            /*
+                Función para obtener un top 5 de los favoritos en las ofertas vigentes
+            */
+        comun.getTopFavsAPI = function (callback) {
+            return $http.get('http://192.9.200.24:8081/api/Chap/Offer/topfavs').then(function (res) {
+                if (res.status == 200) {
+                    return res.data.res;
+                }
+            }, function (err) {
+                comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                return err;
+            });
+
         }
-        /**
-         * Funcion que hace la peticion a la API y devuuleve los comentarios por oferta
-         * 
-         * @returns comments
-         */
+            /**
+             * Funcion que hace la peticion a la API y devuuleve los comentarios por oferta
+             * 
+             * @returns comments
+             */
         comun.getComments = function getComments(callback) {
             var comments = [
-                { "name": "juan", "image": "img/chapIcon.png", "body": "muy buen producto! La torre tiene los mejores precios del mercado" },
-                { "name": "pedro", "image": "img/chapIcon.png", "body": "muy buen producto! Econo el mejor super" },
-                { "name": "pablo", "image": "img/chapIcon.png", "body": "muy buen producto!" },
-                { "name": "javier", "image": "img/chapIcon.png", "body": "muy buen producto!" },
-                { "name": "andres", "image": "img/chapIcon.png", "body": "muy buen producto!" }
+                {
+                    "name": "juan",
+                    "image": "img/chapIcon.png",
+                    "body": "muy buen producto! La torre tiene los mejores precios del mercado"
+                },
+                {
+                    "name": "pedro",
+                    "image": "img/chapIcon.png",
+                    "body": "muy buen producto! Econo el mejor super"
+                },
+                {
+                    "name": "pablo",
+                    "image": "img/chapIcon.png",
+                    "body": "muy buen producto!"
+                },
+                {
+                    "name": "javier",
+                    "image": "img/chapIcon.png",
+                    "body": "muy buen producto!"
+                },
+                {
+                    "name": "andres",
+                    "image": "img/chapIcon.png",
+                    "body": "muy buen producto!"
+                }
             ];
 
             return comments;
@@ -345,17 +344,17 @@ angular.module('actionFactory', [])
             return $localStorage.tokenAPI;
         }
         comun.getSupermarkets = function () {
-            return $localStorage.supermarkets
-        }
-        /*
-            Función para comparar el token actual y reemplazarlo en caso de que halla vencido
-        */
+                return $localStorage.supermarkets
+            }
+            /*
+                Función para comparar el token actual y reemplazarlo en caso de que halla vencido
+            */
         comun.getSupermarkets = function () {
-            return $localStorage.supermarkets
-        }
-        /*
-            Función para comparar el token actual y reemplazarlo en caso de que halla vencido
-        */
+                return $localStorage.supermarkets
+            }
+            /*
+                Función para comparar el token actual y reemplazarlo en caso de que halla vencido
+            */
         function compareToken(newToken) {
             if (getTokenAPI() != newToken) {
                 setToken(newToken);
@@ -404,6 +403,7 @@ angular.module('actionFactory', [])
             } else
                 comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
         }
+
 
         return comun;
     })

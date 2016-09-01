@@ -14,19 +14,19 @@
                 <div class="item card-item" ng-click="setProductDetail(product)">
                     <div ui-sref="app.detalle" class="card stable-bg ink ink-dark">
                         <div class="item item-avatar item-text-wrap">
-                            <span class="avatar" style="background-image: url('http://res.cloudinary.com/oktacore/w_50/{{product.image}}');"></span>
-                            <strong>{{product.description}}</strong>
+                            <span class="avatar" style="background-image: url('http://res.cloudinary.com/oktacore/w_50/{{product.imagenes[0]}}');"></span>
+                            <strong>{{product.nombre}}</strong>
                             <div class="item item-body">
                                 <i class="icon ion-pricetag balanced"></i> <strong>Precio</strong>
                                 <a class="item item-icon-right">
-                                    <i class="badge badge-balanced">Q.{{product.offerPrice}}</i><strong>Oferta</strong>
+                                    <i class="badge badge-balanced">Q.{{product.precio_oferta}}</i><strong>Oferta</strong>
                                 </a>
                             </div>
                             <div class="card-footer text-right">
-                                 <i class="icon ion-star energized"></i> {{product.likes}}
-                                 <i class="icon ion-ios-cart"></i> {{product.name}}
+                                 <i class="icon ion-star energized"></i> {{product.puntuacion}}
+                                 <i class="icon ion-ios-cart"></i> {{product.supermercado_nombre}}
                                  <div class="pull-left">
-                                        <i class="icon ion-clock"></i> {{ product.dateEnd | date:'dd MMMM' }}
+                                        <i class="icon ion-clock"></i> {{ product.fecha_final | date:'dd MMMM' }}
                                  </div>
                             </div>
                         </div>

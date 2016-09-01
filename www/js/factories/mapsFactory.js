@@ -1,6 +1,6 @@
 angular.module('mapsFactory', [])
 
-.factory('GoogleMaps', function ($cordovaGeolocation, $q, $ionicLoading, $cordovaNetwork, ConnectivityMonitor, factory) {
+.factory('GoogleMaps', function ($http, $cordovaGeolocation, $q, $ionicLoading, $cordovaNetwork, ConnectivityMonitor, factory) {
     var comun = {};
     var myPosition = {};
     var markers = [];
@@ -16,20 +16,20 @@ angular.module('mapsFactory', [])
         Función que inicia el proceso de construcción del mapa
     */
     comun.init = function (val) {
-        if (ConnectivityMonitor.isOnline()) {
-            if(val && val==1){
-                removeMarkers();
-                console.log('eliminacion de markers');
+            if (ConnectivityMonitor.isOnline()) {
+                if (val && val == 1) {
+                    removeMarkers();
+                    console.log('eliminacion de markers');
+                }
+                initMap();
+                return true;
+            } else {
+                return false;
             }
-            initMap();
-            return true;
-        } else {
-            return false;
         }
-    }
-    /*
-        Función que carga el mapa y bloque la pantalla mientras carga
-    */
+        /*
+            Función que carga el mapa y bloque la pantalla mientras carga
+        */
     function initMap() {
         $ionicLoading.show({
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
@@ -98,13 +98,14 @@ angular.module('mapsFactory', [])
     */
     function findAllStores() {
         var supermarkets = factory.getSupermarkets();
-        supermarkets.forEach(function (supermarket) {
-            factory.getStoresAPI(supermarket.id).then(function (stores) {
-                stores.forEach(function (store) {
-                    createMarker(store.name, store.address, store.phoneNumber, store.latitude, store.longitude, supermarket.image);
-                });
+            var stores = $http.get('http://192.9.200.24:8081/api/Chap/Stores').then(function (res) {
+                if (res.status == 200) {
+                    console.log(res.data.res);
+                }
             });
-        });
+            /*stores.forEach(function (store) {
+                createMarker(store.name, store.address, store.phoneNumber, store.latitude, store.longitude, supermarket.image);
+            });*/
     }
     /*
         Función que agrega el marcador al mapa
@@ -148,12 +149,13 @@ angular.module('mapsFactory', [])
     /*
         Función para setear un mapa a un conjunto de markers
     */
-    function setMarkersMap(map){
-        for(i = 0; i<markers.length; i++){
+    function setMarkersMap(map) {
+        for (i = 0; i < markers.length; i++) {
             markers[i].setMap(map);
         }
     }
-    function removeMarkers(){
+
+    function removeMarkers() {
         setMarkersMap(null);
         markers = [];
     }
@@ -162,7 +164,7 @@ angular.module('mapsFactory', [])
 
 //*************************************************************************************************************************
 
-.factory('ConnectivityMonitor',  ['$cordovaNetwork',function ($cordovaNetwork) {
+.factory('ConnectivityMonitor', ['$cordovaNetwork', function ($cordovaNetwork) {
     var comun = {};
 
     /*
