@@ -5,7 +5,7 @@
 
         <div class="list  no-padding animate-blinds" ng-last-repeat="mylist" ng-repeat="categoria in categorias">
             <div class="card calm-bg">
-                <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse"" ui-sref="app.products">
+                <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse" setCategoriaId(categoria.id_cat)" ui-sref="app.products">
                     <h2>{{categoria.nombre}}</h2>
                     <img ng-if="$parent.isOnline()" ng-src="http://res.cloudinary.com/oktacore/h_350/{{supermarket. categoriesImage}}">
                 </a>

@@ -513,10 +513,9 @@ angular.module('offerCtrl', [])
             getCategoriasAPI();
         };
 
-        /*$scope.setSupermarketId = function (supermarketId, supermarketName) {
-            factory.supermarketId = supermarketId;
-            factory.supermarketName = supermarketName;
-        }*/
+        $scope.setSupermarketId = function (categoriaId) {
+            factory.categoriaId = categoriaId;
+        }
 
         function getCategoriasAPI() {
             factory.getCategoriasAPI().then(function (data) {
