@@ -4,7 +4,7 @@ angular.module('offerCtrl', [])
 
         $scope.$parent.showHeader();
         $scope.$parent.clearFabs();
-        $scope.$parent.setExpanded(false);
+        $scope.$parent.setExpanded();
         $scope.$parent.setHeaderFab('right');
 
         $ionicLoading.show({
@@ -48,7 +48,6 @@ angular.module('offerCtrl', [])
                 $scope.supermarkets = data;
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$broadcast('scroll.refreshComplete');
-
             });
         }
     })

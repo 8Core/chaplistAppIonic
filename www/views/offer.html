@@ -5,10 +5,10 @@
 
         <div class="list  no-padding animate-blinds" ng-last-repeat="mylist" ng-repeat="supermarket in supermarkets">
             <div class="card clear-bg">
-                <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse" ng-click="setSupermarketId(supermarket.id, supermarket.name)" ui-sref="app.products">
-                    <h2>{{supermarket.name}}</h2>
+                <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse" ng-click="setSupermarketId(supermarket.id_supermarket, supermarket.nombre)" ui-sref="app.products">
+                    <h2>{{supermarket.nombre}}</h2>
                      <!--<img ng-src={{supermarket.image}}>-->
-                    <img ng-if="$parent.isOnline()" ng-src="http://res.cloudinary.com/oktacore/h_350/{{supermarket. categoriesImage}}">
+                    <img ng-if="$parent.isOnline()" ng-src="http://res.cloudinary.com/oktacore/h_350/{{supermarket.imagen}}">
                     <img ng-if="$parent.isOffline()" src="img/genericProduct.jpg">
                 </a>
             </div>

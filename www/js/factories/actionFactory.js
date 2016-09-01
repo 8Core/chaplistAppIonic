@@ -241,7 +241,7 @@ angular.module('actionFactory', [])
                 //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
                 .then(function (res) {
                     if (res.status = 200) {
-                        console.log (res.data);//.res;
+                        return res.data.res;
                     } else
                         return res.data.error;
                 }, function (err) {
