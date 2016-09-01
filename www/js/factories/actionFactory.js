@@ -9,6 +9,7 @@ angular.module('actionFactory', [])
         comun.topFavs = [];
         comun.supermarketId = 1;
         comun.supermarketName = "Generico";
+        comun.categoriaId = 1;
         /*
             Función para mostrar un mensaje sencillo en la pantalla
         */
@@ -186,6 +187,25 @@ angular.module('actionFactory', [])
                 else
                     comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
             }
+        comun.getProductByCategoryAPI = function (arrayProducts) {
+            var products = [];
+            var body = {
+                favProducts: arrayProducts
+            };
+                return $http.get('http://192.9.200.24:8081/api/Chap/offersCategory/' + comun.categoriaId)
+                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            return res.data.res;
+                        } else {
+                            comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                            return [];
+                        }
+                    }, function (err) {
+                        return [];
+                    });
+        }
+
             /*
                 Función para agregar o remover likes de una aplicación
             */
