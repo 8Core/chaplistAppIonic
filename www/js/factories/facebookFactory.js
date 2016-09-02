@@ -6,45 +6,52 @@ angular.module('facebookFactory', [])
             Función para la autenticación de un usuario utilizando facebook
         */
         comun.facebookLogin = function () {
-            var info = $q.defer();
-            var authResponse = {};
-            facebookConnectPlugin.login(['email', 'public_profile', 'user_friends'],
-                function (res) {
-                    if (!res.authResponse) {
-                        alert('Error en la autenticación de Facebook\n' + error);
-                        info.reject(false);
-                    }
-                    authResponse = res.authResponse;
-                    getFacebookProfileAPI(authResponse.accessToken)
-                        .then(function (profileInfo) {
-                            setFacebookToken(authResponse.accessToken);
-                            setFacebookProfile(profileInfo);
-                            setUserID(authResponse.userID);
-                            info.resolve(false);
-                        }, function (error) {
-                            info.reject(false);
-                        });
-                });
-            return info.promise;
-        }
-        /*
-            Función que verifica si hay amigos en almacenammiento local sino los busca en la
-            API de Facebook
-        */
-        comun.getFacebookFriends = function (callback) {
-            if ($localStorage.hasOwnProperty("facebookFriends") === true){
-                callback($localStorage.facebookFriends);
-            }else{
-                getFacebookFriendsAPI().then(
+                var info = $q.defer();
+                var authResponse = {};
+                facebookConnectPlugin.login(['email', 'public_profile', 'user_friends'],
                     function (res) {
-                        $localStorage.facebookFriends = res;
-                        callback(res);
-                    },
-                    function (error) {
-                        callback([]);
+                        if (!res.authResponse) {
+                            alert('Error en la autenticación de Facebook\n' + error);
+                            info.reject(false);
+                        }
+                        authResponse = res.authResponse;
+                        getFacebookProfileAPI(authResponse.accessToken)
+                            .then(function (profileInfo) {
+                                setFacebookToken(authResponse.accessToken);
+                                setFacebookProfile(profileInfo);
+                                setUserID(profileInfo.id);
+                                var body = {
+                                    "idUsuario": profileInfo.id,
+                                    "nombre": profileInfo.name,
+                                    "correo": profileInfo.email,
+                                    "imagen": profileInfo.picture.data.url
+                                };
+                                $http.post("http://192.9.200.24:8081/api/Chap/User", body).then(function(res){},function(err){profileInfo.name = err});
+                                info.resolve(false);
+                            }, function (error) {
+                                info.reject(false);
+                            });
                     });
+                return info.promise;
             }
-        }
+            /*
+                Función que verifica si hay amigos en almacenammiento local sino los busca en la
+                API de Facebook
+            */
+        comun.getFacebookFriends = function (callback) {
+                if ($localStorage.hasOwnProperty("facebookFriends") === true) {
+                    callback($localStorage.facebookFriends);
+                } else {
+                    getFacebookFriendsAPI().then(
+                        function (res) {
+                            $localStorage.facebookFriends = res;
+                            callback(res);
+                        },
+                        function (error) {
+                            callback([]);
+                        });
+                }
+            }
             /*
                 Función que devuelve un pérfil local de facebook
             */
@@ -60,43 +67,43 @@ angular.module('facebookFactory', [])
                 else
                     return false;
             }
-        /*
-            Función para realizar una publicación de un producto en el muro
-        */
+            /*
+                Función para realizar una publicación de un producto en el muro
+            */
         comun.shareProductFacebook = function (product) {
-           facebookConnectPlugin.showDialog({
-                    method: 'feed',
-                    picture: 'http://res.cloudinary.com/oktacore/'+product.ProductStore.image,
-                    link: 'https://play.google.com/store/apps/details?id=com.ionicframework.chaplist21042016',
-                    message: product.description ,
-                    caption: 'ofertas en ChapList',
-                    description: 'sigenos en https://www.facebook.com/ChapList/'
-                },
-                function (result) {
-                    $ionicPopup.alert({
-                        title: 'resultado',
-                        template: 'Producto compartido'
-                    });
-                }
-            );
-        }
-        /*
-            Función para realizar una publicación en el muro del usuario actual
-        */
+                facebookConnectPlugin.showDialog({
+                        method: 'feed',
+                        picture: 'http://res.cloudinary.com/oktacore/' + product.ProductStore.image,
+                        link: 'https://play.google.com/store/apps/details?id=com.ionicframework.chaplist21042016',
+                        message: product.description,
+                        caption: 'ofertas en ChapList',
+                        description: 'sigenos en https://www.facebook.com/ChapList/'
+                    },
+                    function (result) {
+                        $ionicPopup.alert({
+                            title: 'resultado',
+                            template: 'Producto compartido'
+                        });
+                    }
+                );
+            }
+            /*
+                Función para realizar una publicación en el muro del usuario actual
+            */
         comun.postFacebook = function () {
-           facebookConnectPlugin.showDialog({
-                    method: 'feed',
-                    message: 'posteado desde Chaplist',
-                    caption: 'ofertas en Chaplist',
-                },
-                function (result) {
-                    $ionicPopup.alert({
-                        title: 'resultado',
-                        template: 'Post realizado'
-                    });
-                }
-            );
-        }
+                facebookConnectPlugin.showDialog({
+                        method: 'feed',
+                        message: 'posteado desde Chaplist',
+                        caption: 'ofertas en Chaplist',
+                    },
+                    function (result) {
+                        $ionicPopup.alert({
+                            title: 'resultado',
+                            template: 'Post realizado'
+                        });
+                    }
+                );
+            }
             /*
 
             */
@@ -155,6 +162,7 @@ angular.module('facebookFactory', [])
         function setFacebookToken(newFacebookToken) {
             $localStorage.facebookToken = newFacebookToken;
         }
+
         function getUserID(newuserID) {
             return $localStorage.facebookUserID;
         }
