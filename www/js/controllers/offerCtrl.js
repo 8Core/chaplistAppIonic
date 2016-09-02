@@ -95,8 +95,17 @@ angular.module('offerCtrl', [])
         };
 
         function getProducts() {
-            factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
+            var lastProduct;
+            console.log($rootScope.products);
+            if($rootScope.products.length == 0){
+                lastProduct = 0;
+            }else{
+                lastProduct = $rootScope.products[$rootScope.products.length-1].id_oferta;
+            }
+                                console.log(lastProduct);
+            factory.getProductsInOfferAPI(lastProduct).then(function (data) {
                 $rootScope.products = data;
+                console.log($rootScope.products);
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
                 $scope.$broadcast('scroll.refreshComplete');
@@ -109,17 +118,7 @@ angular.module('offerCtrl', [])
                 $scope.fin = true;
             }
             data.forEach(function (b) {
-                $rootScope.products.push({
-                    ProductStore: b.ProductStore,
-                    createdAt: b.createdAt,
-                    updatedAt: b.updatedAt,
-                    description: b.description,
-                    id: b.id,
-                    upc: b.upc,
-                    dateInit: b.dateInit,
-                    dateEnd: b.dateEnd,
-                    name: b.name
-                });
+                $rootScope.products.push(b);
             });
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.$broadcast('scroll.refreshComplete');
@@ -129,7 +128,14 @@ angular.module('offerCtrl', [])
         */
         $scope.loadMore = function () {
             if (!$scope.fin) {
-                factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
+                var lastProduct;
+            console.log($rootScope.products);
+            if($rootScope.products.length == 0){
+                lastProduct = 0;
+            }else{
+                lastProduct = $rootScope.products[$rootScope.products.length-1].id_oferta;
+            }
+                factory.getProductsInOfferAPI(lastProduct).then(function (data) {
                     $rootScope.$broadcast('loadProducts', data);
                 });
             }
@@ -137,8 +143,8 @@ angular.module('offerCtrl', [])
         /*
             Función para colocar un producto para su detalle
         */
-        $scope.setProductDetail = function (productDetail) {
-                offerFactory.setProductDetail(productDetail);
+        $scope.setProductId = function (productId) {
+                offerFactory.setProductId(productId);
             }
             /*
                 Función para agregar a favoritos desde catalogo
@@ -412,7 +418,7 @@ angular.module('offerCtrl', [])
         };
 
         function getProducts() {
-            factory.getProductsInOfferAPI($rootScope.products.length).then(function (data) {
+            factory.getProductsInOfferAPI($rootScope.products[$rootScope.products.length-1].id_oferta).then(function (data) {
                 $rootScope.products = data;
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
@@ -513,8 +519,8 @@ angular.module('offerCtrl', [])
             getCategoriasAPI();
         };
 
-        $scope.setSupermarketId = function (categoriaId) {
-            factory.categoriaId = categoriaId;
+        $scope.setCategoriaNombre = function (categoriaNombre) {
+            factory.categoriaNombre = categoriaNombre;
         }
 
         function getCategoriasAPI() {

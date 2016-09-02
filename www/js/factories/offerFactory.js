@@ -4,12 +4,12 @@ angular.module('offerFactory', [])
     var comun = {};
     var productDetail = {};
 
-    comun.setProductDetail = function (product) {
-        productDetail = product;
+    comun.setProductId = function (product) {
+        productId = product;
     }
 
-    comun.getProductDetail = function () {
-            return productDetail;
+    comun.getProductId = function () {
+            return productId;
         }
         /*
             Función para agregar un nuevo producto a la lista de favoritos

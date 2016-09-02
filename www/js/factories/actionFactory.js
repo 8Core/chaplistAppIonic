@@ -9,7 +9,8 @@ angular.module('actionFactory', [])
         comun.topFavs = [];
         comun.supermarketId = 1;
         comun.supermarketName = "Generico";
-        comun.categoriaId = 1;
+        comun.categoriaNombre = 1;
+        comun.CategoryOrSupermarket = 1;
         /*
             Función para mostrar un mensaje sencillo en la pantalla
         */
@@ -127,10 +128,14 @@ angular.module('actionFactory', [])
             /*
                 Función para obtener los productos en oferta vigentes para un supermercado seleccionado
             */
-        comun.getProductsInOfferAPI = function (offset) {
+        comun.getProductsInOfferAPI = function (lastProduct) {
                 var deferred = {};
                 var result = {};
                 var products = [];
+
+            if(lastProduct == null || lastProduct == 0){
+                lastProduct = "00000000-0000-0000-0000-000000000000";
+            }
 
                 if (ConnectivityMonitor.ifOffline()) { //verifico conectividad a internet
                     deferred = $q.defer();
@@ -138,65 +143,13 @@ angular.module('actionFactory', [])
                     return deferred.promise;
                 }
 
-                if (comun.existsTokenAPI())
-                    return $http.get('http://chaplist.oktacore.com/api/Chap/Offer/' + comun.supermarketId + '/' + offset + '/' + getTokenAPI())
-                        //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
-                        .then(function (res) {
-                            if (res.status = 200) {
-                                result = transformToJson(res.data);
-                                products = result.products;
-                                for (var i = 0; i < products.length; i++) {
-                                    products[i].dateInit = products[0].dateInit;
-                                    products[i].dateEnd = products[0].dateEnd;
-                                    products[i].name = comun.supermarketName;
-                                }
-                                compareToken(result.token);
-                                return products;
-                            } else {
-                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                                return [];
-                            }
-                        }, function (err) {
-                            return [];
-                        });
-                else
-                    comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-            }
-            /*
-                Función para obtener un producto específico en oferta
-            */
-        comun.getProductInOfferAPI = function (arrayProducts) {
-                var products = [];
-                var body = {
-                    favProducts: arrayProducts
-                };
-                if (comun.existsTokenAPI())
-                    return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/favproducts/' + getTokenAPI(), body)
-                        //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
-                        .then(function (res) {
-                            if (res.status = 200) {
-                                products = transformToJson(res.data);
-                                return products;
-                            } else {
-                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-                                return [];
-                            }
-                        }, function (err) {
-                            return [];
-                        });
-                else
-                    comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
-            }
-        comun.getProductByCategoryAPI = function (arrayProducts) {
-            var products = [];
-            var body = {
-                favProducts: arrayProducts
-            };
-                return $http.get('http://192.9.200.24:8081/api/Chap/offersCategory/' + comun.categoriaId)
-                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                if (comun.CategoryOrSupermarket == 0) // 0 represeenta supermercado
+                    return $http.get('http://54.198.52.244:8080/api/Chap/Offer/' + comun.supermarketId + '?lastUuidOferta=' + lastProduct)
                     .then(function (res) {
                         if (res.status = 200) {
-                            return res.data.res;
+                            products = res.data.res;
+                            console.log(res.data.res);
+                            return products;
                         } else {
                             comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
                             return [];
@@ -204,11 +157,68 @@ angular.module('actionFactory', [])
                     }, function (err) {
                         return [];
                     });
+                else
+                    console.log('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
+                    return $http.get('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                products = res.data.res;
+                                return products;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                                return [];
+                            }
+                        }, function (err) {
+                            return [];
+                        });
+            }
+            /*
+                Función para obtener un producto específico en oferta
+            */
+        comun.getProductInOfferAPI = function (arrayProducts) {
+            var products = [];
+            var body = {
+                favProducts: arrayProducts
+            };
+            if (comun.existsTokenAPI())
+                return $http.post('http://chaplist.oktacore.com/api/Chap/Offer/favproducts/' + getTokenAPI(), body)
+                    //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            products = transformToJson(res.data);
+                            return products;
+                        } else {
+                            comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                            return [];
+                        }
+                    }, function (err) {
+                        return [];
+                    });
+            else
+                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+        }
+        comun.getProductByCategoryAPI = function (arrayProducts) {
+            var products = [];
+            var body = {
+                favProducts: arrayProducts
+            };
+            return $http.get('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaId)
+                //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                .then(function (res) {
+                    if (res.status = 200) {
+                        return res.data.res;
+                    } else {
+                        comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                        return [];
+                    }
+                }, function (err) {
+                    return [];
+                });
         }
 
-            /*
-                Función para agregar o remover likes de una aplicación
-            */
+        /*
+            Función para agregar o remover likes de una aplicación
+        */
         comun.addOrRemoveLikes = function (offerId, productId, type) {
                 var body = {};
                 var newOffer = {};
@@ -256,50 +266,50 @@ angular.module('actionFactory', [])
         */
         comun.getSupermarketsAPI = function () {
 
-            var result = {};
-            return $http.get('http://192.9.200.24:8081/api/Chap/Supermarkets/guatemala')
-                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
-                .then(function (res) {
-                    if (res.status = 200) {
-                        return res.data.res;
-                    } else
-                        return res.data.error;
-                }, function (err) {
-                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                    return err;
-                });
-        }
-        /*
-            Función para obtener las categoria de los productos
-        */
+                var result = {};
+                return $http.get('http://54.198.52.244:8080/api/Chap/Supermarkets/guatemala')
+                    //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            return res.data.res;
+                        } else
+                            return res.data.error;
+                    }, function (err) {
+                        comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                        return err;
+                    });
+            }
+            /*
+                Función para obtener las categoria de los productos
+            */
         comun.getCategoriasAPI = function () {
-            var result = {};
-            return $http.get('http://192.9.200.24:8081/api/Chap/categories/')
-                //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
-                .then(function (res) {
-                    if (res.status = 200) {
-                        return res.data.res;//.res;
-                    } else
-                        return res.data.error;
-                }, function (err) {
-                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                    return err;
-                });
-        }
+                var result = {};
+                return $http.get('http://54.198.52.244:8080/api/Chap/categories/')
+                    //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            return res.data.res; //.res;
+                        } else
+                            return res.data.error;
+                    }, function (err) {
+                        comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                        return err;
+                    });
+            }
             /*
                 Función para obtener un top 5 de los favoritos en las ofertas vigentes
             */
         comun.getTopFavsAPI = function (callback) {
-            return $http.get('http://192.9.200.24:8081/api/Chap/Offer/topfavs').then(function (res) {
-                if (res.status == 200) {
-                    return res.data.res;
-                }
-            }, function (err) {
-                comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
-                return err;
-            });
+                return $http.get('http://54.198.52.244:8080/api/Chap/Offer/topfavs').then(function (res) {
+                    if (res.status == 200) {
+                        return res.data.res;
+                    }
+                }, function (err) {
+                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                    return err;
+                });
 
-        }
+            }
             /**
              * Funcion que hace la peticion a la API y devuuleve los comentarios por oferta
              * 
