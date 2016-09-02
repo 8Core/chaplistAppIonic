@@ -233,6 +233,10 @@ angular.module('appCtrl', [])
             console.log($scope.topOffers);
         });
     }
+    $scope.setProductId = function (productId) {
+        offerFactory.setProductId(productId);
+        factory.setProductId(productId);
+    }
 })
 
 

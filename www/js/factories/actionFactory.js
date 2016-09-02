@@ -12,6 +12,16 @@ angular.module('actionFactory', [])
         comun.categoriaNombre = 1;
         comun.CategoryOrSupermarket = 1;
         comun.offerFilter = {};
+        comun.categoriaIdComparar = 1;
+        var productId;
+
+        comun.setProductId = function (product) {
+            productId = product;
+        }
+
+        comun.getProductId = function () {
+            return productId;
+        }
         /*
             Función para mostrar un mensaje sencillo en la pantalla
         */
@@ -174,6 +184,19 @@ angular.module('actionFactory', [])
                         });
                 } else if(comun.CategoryOrSupermarket == 2){
                     return comun.getAllOffers(comun.offerFilter.min,comun.offerFilter.max,comun.offerFilter.tipo,lastProduct);
+                } else if(comun.CategoryOrSupermarket ==3){
+                    return $http.get('http://192.9.200.24:8081/api/Chap/compare/' + comun.categoriaIdComparar)
+                        .then(function (res) {
+                            if (res.status = 200) {
+                                products = res.data.res;
+                                return products;
+                            } else {
+                                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                                return [];
+                            }
+                        }, function (err) {
+                            return [];
+                        });
                 }
         }
             /*
@@ -322,35 +345,15 @@ angular.module('actionFactory', [])
              * @returns comments
              */
         comun.getComments = function getComments(callback) {
-            var comments = [
-                {
-                    "name": "juan",
-                    "image": "img/chapIcon.png",
-                    "body": "muy buen producto! La torre tiene los mejores precios del mercado"
-                },
-                {
-                    "name": "pedro",
-                    "image": "img/chapIcon.png",
-                    "body": "muy buen producto! Econo el mejor super"
-                },
-                {
-                    "name": "pablo",
-                    "image": "img/chapIcon.png",
-                    "body": "muy buen producto!"
-                },
-                {
-                    "name": "javier",
-                    "image": "img/chapIcon.png",
-                    "body": "muy buen producto!"
-                },
-                {
-                    "name": "andres",
-                    "image": "img/chapIcon.png",
-                    "body": "muy buen producto!"
-                }
-            ];
-
-            return comments;
+            return $http.get('http://192.9.200.24:8081/api/Chap/getComentarios/'+ comun.getProductId()).then(function (res) {
+                    if (res.status == 200) {
+                        console.log(res.data.res);
+                        return res.data.res;
+                    }
+                }, function (err) {
+                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                    return err;
+                });
         }
 
         /*

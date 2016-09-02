@@ -11,8 +11,8 @@
         </div>
         <ion-slide-box on-slide-changed="slideHasChanged($index)" class="animate-fade-slide-in">
             <ion-slide ng-repeat="product in topOffers" ng-last-repeat="mylist">
-                <div class="item card-item" ng-click="setProductDetail(product)">
-                    <div ui-sref="app.detalle" class="card stable-bg ink ink-dark">
+                <div class="item card-item">
+                    <div ui-sref="app.detalle" class="card stable-bg ink ink-dark" ng-click="setProductId(product.id_oferta)">
                         <div class="item item-avatar item-text-wrap">
                             <span class="avatar" style="background-image: url('http://res.cloudinary.com/oktacore/w_50/{{product.imagenes[0]}}');"></span>
                             <strong>{{product.nombre}}</strong>
