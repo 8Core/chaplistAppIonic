@@ -59,6 +59,20 @@ angular.module('offerFactory', [])
                 }
             }
         }
+
+
+
+        comun.getComments = function getComments(callback) {
+            return $http.get('http://192.9.200.24:8081/api/Chap/getComentarios/'+ comun.getProductId()).then(function (res) {
+                    if (res.status == 200) {
+                        console.log(res.data.res);
+                        return res.data.res;
+                    }
+                }, function (err) {
+                    comun.ionicMessage('Advertencia', 'Ocurrio algun problema con el servidor, comunicarse con el administrador');
+                    return err;
+                });
+        }
         /*
             Función para eliminar cierto producto de la lista de favoritos del usuario local
             además se decrementa la cantidad de likes en el servidor para dicho producto

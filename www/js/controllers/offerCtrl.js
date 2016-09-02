@@ -180,6 +180,7 @@ angular.module('offerCtrl', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
     $scope.fav = "light";
+    $scope.colores=['energized','mute','mute','mute','mute'];
 
     // Set Motion
     $timeout(function () {
@@ -196,6 +197,7 @@ angular.module('offerCtrl', [])
     offerFactory.getProductDetail().then(function (data) {
         $scope.productDetail = data[0];
         console.log($scope.productDetail);
+        $scope.Puntuacion(data[0].puntuacion);
     });
     $scope.$watch('$viewContentLoaded', function () {
         /*$scope.fav = offerFactory.addFavorite($scope.productDetail, false);*/
@@ -217,6 +219,24 @@ angular.module('offerCtrl', [])
         console.log($scope.comment.body);
     }
 
+    $scope.setComparaId = function (categoriaNombre) {
+        factory.categoriaNombre = categoriaNombre;
+        factory.CategoryOrSupermarket = 1;
+    }
+    
+    $scope.Puntuacion = function(puntuacion){
+        console.log("puntuacion" + puntuacion);
+        if(puntuacion==1)
+            $scope.colores=['energized','mute','mute','mute','mute'];
+        else if(puntuacion==2)
+            $scope.colores=['energized','energized','mute','mute','mute'];
+        else if(puntuacion==3)
+            $scope.colores=['energized','energized','energized','mute','mute'];
+        else if(puntuacion==4)
+            $scope.colores=['energized','energized','energized','energized','mute'];
+        else if(puntuacion==5)
+            $scope.colores=['energized','energized','energized','energized','energized'];
+    }
 
 })
 
@@ -510,6 +530,7 @@ angular.module('offerCtrl', [])
 
         $scope.setCategoriaNombre = function (categoriaNombre) {
             factory.categoriaNombre = categoriaNombre;
+            factory.CategoryOrSupermarket = 1;
         }
 
         function getCategoriasAPI() {
