@@ -38,8 +38,8 @@ angular.module('offerCtrl', [])
             getSupermarketsAPI();
         };
 
-        $scope.setSupermarketId = function (supermarketId, supermarketName) {
-            factory.supermarketId = supermarketId;
+        $scope.setSupermarketName = function (supermarketName) {
+            factory.CategoryOrSupermarket = 0;
             factory.supermarketName = supermarketName;
         }
 
@@ -97,12 +97,15 @@ angular.module('offerCtrl', [])
         function getProducts() {
             var lastProduct;
             console.log($rootScope.products);
-            if($rootScope.products.length == 0){
+            if ($rootScope.products.length == 0) {
                 lastProduct = 0;
-            }else{
-                lastProduct = $rootScope.products[$rootScope.products.length-1].id_oferta;
+            } else {
+                if(factory.CategoryOrSupermarket == 2){
+                    lastProduct = $rootScope.products.length;
+                }else{
+                 lastProduct = $rootScope.products[$rootScope.products.length - 1].id_oferta;
+                }
             }
-                                console.log(lastProduct);
             factory.getProductsInOfferAPI(lastProduct).then(function (data) {
                 $rootScope.products = data;
                 console.log($rootScope.products);
@@ -128,13 +131,17 @@ angular.module('offerCtrl', [])
         */
         $scope.loadMore = function () {
             if (!$scope.fin) {
+
                 var lastProduct;
-            console.log($rootScope.products);
-            if($rootScope.products.length == 0){
-                lastProduct = 0;
-            }else{
-                lastProduct = $rootScope.products[$rootScope.products.length-1].id_oferta;
-            }
+                if ($rootScope.products.length == 0) {
+                    lastProduct = 0;
+                } else {
+                    if(factory.CategoryOrSupermarket == 2){
+                    lastProduct = $rootScope.products.length;
+                }else{
+                 lastProduct = $rootScope.products[$rootScope.products.length - 1].id_oferta;
+                }
+                }
                 factory.getProductsInOfferAPI(lastProduct).then(function (data) {
                     $rootScope.$broadcast('loadProducts', data);
                 });
@@ -186,16 +193,16 @@ angular.module('offerCtrl', [])
     //////////////////////////////////////////////////////////////////////////////////////
     $scope.favorites = [];
 
-    offerFactory.getProductDetail().then(function(data){
-     $scope.productDetail = data[0];
+    offerFactory.getProductDetail().then(function (data) {
+        $scope.productDetail = data[0];
         console.log($scope.productDetail);
     });
     $scope.$watch('$viewContentLoaded', function () {
-        $scope.fav = offerFactory.addFavorite($scope.productDetail, false);
+        /*$scope.fav = offerFactory.addFavorite($scope.productDetail, false);*/
     });
 
     $scope.addFavorite = function (productDetail) {
-            $scope.fav = offerFactory.addFavorite(productDetail, true);
+            /*$scope.fav = offerFactory.addFavorite(productDetail, true);*/
         }
         //PARA COMPARTIR UN PRODUCTO LA FUNCIÓN ESTÁ ESPECIFICADA EN EL CONTROLADOR PADRE appCtrl
 
@@ -319,9 +326,11 @@ angular.module('offerCtrl', [])
         // Set Ink
         ionicMaterialInk.displayEffect();
         ////////////////////////////////////////////////////////////
-        $scope.value = '';
+        $scope.min = '';
+        $scope.max = '';
+        $scope.tipo = 'descuento';
         $scope.products = [];
-        getAllOffers($scope.value);
+        getAllOffers($scope.min, $scope.max, $scope.tipo);
 
 
         $scope.reload = function () {
@@ -331,36 +340,13 @@ angular.module('offerCtrl', [])
             $scope.$broadcast('scroll.refreshComplete');
         };
 
-        $scope.setProductDetail = function (productDetail) {
-            productDetail = {
-                '$$hashKey': productDetail['$$hashKey'],
-                ProductStore: {
-                    'image': productDetail['image'],
-                    'likes': productDetail['likes'],
-                    'normalPrice': productDetail['normalPrice'],
-                    'offerId': productDetail['offerId'],
-                    'offerPrice': productDetail['offerPrice'],
-                    'productId': productDetail['productId']
-                },
-                'description': productDetail['description'],
-                'upc': productDetail['upc'],
-                'dateEnd': productDetail['dateEnd'],
-                'dateInit': productDetail['dateInit'],
-                'name': productDetail['name'],
-                'id': productDetail['productId']
-            };
-            offerFactory.setProductDetail(productDetail);
-        }
-
         function getAllOffers() {
-            if ($scope.value != '') {
-                factory.getAllOffers($scope.value, 0).then(function (res) {
-                    $scope.products = res;
-                    $ionicScrollDelegate.$getByHandle('')['_instances'][0].freezeScroll(true);
-                });
-            } else {
-                $scope.products = [];
-            }
+            factory.CategoryOrSupermarket = 2;
+            factory.offerFilter = {
+                "min": $scope.min,
+                "max": $scope.max,
+                "tipo": $scope.tipo
+            };
         }
 
         $scope.getAllOffers = getAllOffers;
@@ -421,7 +407,7 @@ angular.module('offerCtrl', [])
         };
 
         function getProducts() {
-            factory.getProductsInOfferAPI($rootScope.products[$rootScope.products.length-1].id_oferta).then(function (data) {
+            factory.getProductsInOfferAPI($rootScope.products[$rootScope.products.length - 1].id_oferta).then(function (data) {
                 $rootScope.products = data;
                 $ionicLoading.hide();
                 $scope.$broadcast('scroll.refreshComplete');
@@ -493,7 +479,7 @@ angular.module('offerCtrl', [])
 
         $ionicLoading.show({
             template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
-        });//$ionicLoading.hide();
+        }); //$ionicLoading.hide();
 
         // efects
         $scope.$on('ngLastRepeat.mylist', function (e) {

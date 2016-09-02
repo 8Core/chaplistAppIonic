@@ -18,7 +18,7 @@
                                 <i class="icon ion-star"></i> <b>{{product.puntuacion}}</b>
                             </a>
                             <a class="tab-item stable-bg balanced-900" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
-                                <b><p>Q. {{product.precio_oferta}}</p></b>
+                                <b><p>Q. {{product.precio_oferta | number:2}}</p></b>
                             </a>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                                 <i class="icon ion-star"></i> <b>{{product.puntuacion}}</b>
                             </a>
                             <a class="tab-item stable-bg balanced-900" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
-                                <b><p>Q. {{product.precio_oferta}}</p></b>
+                                <b><p>Q. {{product.precio_oferta | number:2}}</p></b>
                             </a>
                         </div>
                     </div>

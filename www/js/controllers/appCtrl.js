@@ -319,7 +319,7 @@ angular.module('appCtrl', [])
         }
     })
 
-.controller('btnRefresh Ctrl', function ($scope, $state, $ionicPopup, $timeout, GoogleMaps) {
+.controller('btnRefreshCtrl', function ($scope, $state, $ionicPopup, $timeout, GoogleMaps) {
         $timeout(function () {
             document.getElementById('fab-activity').classList.toggle('on');
         }, 300);

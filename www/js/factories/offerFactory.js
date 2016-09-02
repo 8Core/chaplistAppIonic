@@ -13,7 +13,7 @@ angular.module('offerFactory', [])
     }
 
     comun.getProductDetail = function () {
-            return $http.get('http://54.82.171.78:8080/api/Chap/getOffer/' + comun.getProductId())
+            return $http.get('http://192.9.200.24:8081/api/Chap/getOffer/' + comun.getProductId())
                 //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
                 .then(function (res) {
                     if (res.status = 200) {
@@ -37,7 +37,7 @@ angular.module('offerFactory', [])
                 $localStorage.favorites = [];
 
             var cat = $localStorage.favorites.filter(function (obj) {
-                return obj.id == product.id;
+                return obj.id_oferta == product.id_oferta;
             });
             if (cat.length == 0 && validate) {
                 factory.ionicMessage('Atención', 'Su producto se ha añadido a su lista de favoritos');

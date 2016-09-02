@@ -11,6 +11,7 @@ angular.module('actionFactory', [])
         comun.supermarketName = "Generico";
         comun.categoriaNombre = 1;
         comun.CategoryOrSupermarket = 1;
+        comun.offerFilter = {};
         /*
             Función para mostrar un mensaje sencillo en la pantalla
         */
@@ -143,8 +144,8 @@ angular.module('actionFactory', [])
                     return deferred.promise;
                 }
 
-                if (comun.CategoryOrSupermarket == 0) // 0 represeenta supermercado
-                    return $http.get('http://54.82.171.78:8080/api/Chap/Offer/' + comun.supermarketId + '?lastUuidOferta=' + lastProduct)
+                if (comun.CategoryOrSupermarket == 0){ // 0 represeenta supermercado
+                    return $http.get('http://192.9.200.24:8081/api/Chap/Offer/' + comun.supermarketName + '?lastUuidOferta=' + lastProduct)
                     .then(function (res) {
                         if (res.status = 200) {
                             products = res.data.res;
@@ -157,9 +158,9 @@ angular.module('actionFactory', [])
                     }, function (err) {
                         return [];
                     });
-                else
-                    console.log('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
-                    return $http.get('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
+                }
+                else if(comun.CategoryOrSupermarket == 1){
+                    return $http.get('http://192.9.200.24:8081/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
                         .then(function (res) {
                             if (res.status = 200) {
                                 products = res.data.res;
@@ -171,7 +172,10 @@ angular.module('actionFactory', [])
                         }, function (err) {
                             return [];
                         });
-            }
+                } else if(comun.CategoryOrSupermarket == 2){
+                    return comun.getAllOffers(comun.offerFilter.min,comun.offerFilter.max,comun.offerFilter.tipo,lastProduct);
+                }
+        }
             /*
                 Función para obtener un producto específico en oferta
             */
@@ -197,12 +201,14 @@ angular.module('actionFactory', [])
             else
                 comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
         }
+        /**
+        */
         comun.getProductByCategoryAPI = function (arrayProducts) {
             var products = [];
             var body = {
                 favProducts: arrayProducts
             };
-            return $http.get('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaId)
+            return $http.get('http://192.9.200.24:8081/api/Chap/offersCategory/' + comun.categoriaId)
                 //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
                 .then(function (res) {
                     if (res.status = 200) {
@@ -267,7 +273,7 @@ angular.module('actionFactory', [])
         comun.getSupermarketsAPI = function () {
 
                 var result = {};
-                return $http.get('http://54.82.171.78:8080/api/Chap/Supermarkets/guatemala')
+                return $http.get('http://192.9.200.24:8081/api/Chap/Supermarkets/guatemala')
                     //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
                     .then(function (res) {
                         if (res.status = 200) {
@@ -284,7 +290,7 @@ angular.module('actionFactory', [])
             */
         comun.getCategoriasAPI = function () {
                 var result = {};
-                return $http.get('http://54.82.171.78:8080/api/Chap/categories/')
+                return $http.get('http://192.9.200.24:8081/api/Chap/categories/')
                     //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
                     .then(function (res) {
                         if (res.status = 200) {
@@ -300,7 +306,7 @@ angular.module('actionFactory', [])
                 Función para obtener un top 5 de los favoritos en las ofertas vigentes
             */
         comun.getTopFavsAPI = function (callback) {
-                return $http.get('http://54.82.171.78:8080/api/Chap/Offer/topfavs').then(function (res) {
+                return $http.get('http://192.9.200.24:8081/api/Chap/Offer/topfavs').then(function (res) {
                     if (res.status == 200) {
                         return res.data.res;
                     }
@@ -408,7 +414,7 @@ angular.module('actionFactory', [])
             return JSON.parse(data);
         }
 
-        comun.getAllOffers = function (value, offset) {
+        comun.getAllOffers = function (min, max, tipo, lastOffer) {
 
             var deferred = {};
             var result = {};
@@ -420,14 +426,11 @@ angular.module('actionFactory', [])
                 return deferred.promise;
             }
 
-            if (comun.existsTokenAPI()) {
-                return $http.get('http://chaplist.oktacore.com/api/Chap/getAllOffers/' + value + '/' + offset + '/' + getTokenAPI())
+            if (tipo=='descuento') {
+                return $http.get('http://192.9.200.24:8081/api/Chap/offersDiscount/' + max + '/' + min + '?lastOferta=' + lastOffer)
                     .then(function (res) {
                         if (res.status = 200) {
-                            result = transformToJson(res.data);
-                            products = result.products
-                            compareToken(result.token);
-                            return products;
+                            return res.data.res;
                         } else {
                             comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
                             return [];
@@ -436,7 +439,17 @@ angular.module('actionFactory', [])
                         return [];
                     });
             } else
-                comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                return $http.get('http://192.9.200.24:8081/api/Chap/offersPrice/' + max + '/' + min + '?lastOferta=' + lastOffer)
+                    .then(function (res) {
+                        if (res.status = 200) {
+                            return res.data.res;
+                        } else {
+                            comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                            return [];
+                        }
+                    }, function (err) {
+                        return [];
+                    });
         }
 
 
