@@ -6,7 +6,7 @@
 </style>
 <ion-view view-title="Detalle">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-        <div ng-if="$parent.isOnline()" class="hero has-mask slide-up" style="background-image: url(http://res.cloudinary.com/oktacore/w_250,h_250,c_pad/{{productDetail.ProductStore.image}});">
+        <div ng-if="$parent.isOnline()" class="hero has-mask slide-up" style="background-image: url(http://res.cloudinary.com/oktacore/w_250,h_250,c_pad/{{productDetail.imagenes[0]}});">
             <div class="content">
                 <button class="button button-clear flat waves-effect waves-button waves-light icon ion-heart button-{{fav}} pull-right text-white"
                     ng-click="addFavorite(productDetail)"></button>
@@ -29,7 +29,7 @@
         </div>
         <div class="mid-bar dark-bg z1 padding">
 
-            <h4>{{productDetail.description}}</h4>
+            <h4>{{productDetail.nombre}}</h4>
         </div>
         <div class="content double-padding">
             <!--<h4 class="positive">Producto</h4>-->
@@ -37,7 +37,7 @@
                 <div class="list">
                     <a class="item item-icon-left">
                         <h3><i class="icon ion-pricetag"> </i>Precio de oferta</h3>
-                        <span class="badge badge-balanced">Q.{{productDetail.ProductStore.offerPrice}}</span>
+                        <span class="badge badge-balanced">Q.{{productDetail.precio_oferta}}</span>
                     </a>
                 </div>
 
@@ -51,8 +51,8 @@
         </div>
         <div class="list">
             <a class="item item-icon-left">
-                <i class="icon ion-clock balanced"></i> Del <b>{{ productDetail.dateInit | date:'dd MMMM' }}</b> al <b>{{ productDetail.dateEnd | date:'dd MMMM yyyy' }}</b>.
-                <br>En <b>{{productDetail.name}}</b>
+                <i class="icon ion-clock balanced"></i> Del <b>{{ productDetail.fecha_inicio | date:'dd MMMM' }}</b> al <b>{{ productDetail.fecha_final | date:'dd MMMM yyyy' }}</b>.
+                <br>En <b>{{productDetail.supermercado_nombre}}</b>
             </a>
         </div>
         <div class="list">

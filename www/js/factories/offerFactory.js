@@ -2,14 +2,30 @@ angular.module('offerFactory', [])
 
 .factory('offerFactory', function ($localStorage, ConnectivityMonitor, factory, $ionicPopup, $http) {
     var comun = {};
-    var productDetail = {};
+    var productId;
 
     comun.setProductId = function (product) {
         productId = product;
     }
 
     comun.getProductId = function () {
-            return productId;
+        return productId;
+    }
+
+    comun.getProductDetail = function () {
+            return $http.get('http://54.82.171.78:8080/api/Chap/getOffer/' + comun.getProductId())
+                //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
+                .then(function (res) {
+                    if (res.status = 200) {
+                        return res.data.res;
+                        console.log(res.data.res);
+                    } else {
+                        comun.ionicMessage('Advertencia', 'Las credenciales de la app no existen en la API');
+                        return [];
+                    }
+                }, function (err) {
+                    return [];
+                });
         }
         /*
             Función para agregar un nuevo producto a la lista de favoritos
@@ -79,14 +95,14 @@ angular.module('offerFactory', [])
         var index = 0;
         var product = {};
         var userID = $localStorage.facebookUserID;
-        return $http.get('http://192.9.200.24:8081/api/Chap/favorites/'+ userID)
+        return $http.get('http://192.9.200.24:8081/api/Chap/favorites/' + userID)
         if (ConnectivityMonitor.ifOffline())
             return callback($localStorage.favorites);
 
         factory.getProductInOfferAPI(buildFavArray())
             .then(function (res) {
                 if (res.status = 200) {
-                    return(res.data.res);//.supermarkets;
+                    return (res.data.res); //.supermarkets;
                 } else
                     return res.data.error;
             })

@@ -144,7 +144,7 @@ angular.module('actionFactory', [])
                 }
 
                 if (comun.CategoryOrSupermarket == 0) // 0 represeenta supermercado
-                    return $http.get('http://54.198.52.244:8080/api/Chap/Offer/' + comun.supermarketId + '?lastUuidOferta=' + lastProduct)
+                    return $http.get('http://54.82.171.78:8080/api/Chap/Offer/' + comun.supermarketId + '?lastUuidOferta=' + lastProduct)
                     .then(function (res) {
                         if (res.status = 200) {
                             products = res.data.res;
@@ -158,8 +158,8 @@ angular.module('actionFactory', [])
                         return [];
                     });
                 else
-                    console.log('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
-                    return $http.get('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
+                    console.log('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
+                    return $http.get('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaNombre + '?lastUuidOferta=' + lastProduct)
                         .then(function (res) {
                             if (res.status = 200) {
                                 products = res.data.res;
@@ -202,7 +202,7 @@ angular.module('actionFactory', [])
             var body = {
                 favProducts: arrayProducts
             };
-            return $http.get('http://54.198.52.244:8080/api/Chap/offersCategory/' + comun.categoriaId)
+            return $http.get('http://54.82.171.78:8080/api/Chap/offersCategory/' + comun.categoriaId)
                 //return $http.get('http://192.168.0.14:8080/api/Chap/Offer/' + comun.supermarketId + '/' + getTokenAPI())
                 .then(function (res) {
                     if (res.status = 200) {
@@ -267,7 +267,7 @@ angular.module('actionFactory', [])
         comun.getSupermarketsAPI = function () {
 
                 var result = {};
-                return $http.get('http://54.198.52.244:8080/api/Chap/Supermarkets/guatemala')
+                return $http.get('http://54.82.171.78:8080/api/Chap/Supermarkets/guatemala')
                     //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
                     .then(function (res) {
                         if (res.status = 200) {
@@ -284,7 +284,7 @@ angular.module('actionFactory', [])
             */
         comun.getCategoriasAPI = function () {
                 var result = {};
-                return $http.get('http://54.198.52.244:8080/api/Chap/categories/')
+                return $http.get('http://54.82.171.78:8080/api/Chap/categories/')
                     //return $http.get('http://192.168.0.14:8080/api/Chap/Supermarkets/' + getTokenAPI())
                     .then(function (res) {
                         if (res.status = 200) {
@@ -300,7 +300,7 @@ angular.module('actionFactory', [])
                 Función para obtener un top 5 de los favoritos en las ofertas vigentes
             */
         comun.getTopFavsAPI = function (callback) {
-                return $http.get('http://54.198.52.244:8080/api/Chap/Offer/topfavs').then(function (res) {
+                return $http.get('http://54.82.171.78:8080/api/Chap/Offer/topfavs').then(function (res) {
                     if (res.status == 200) {
                         return res.data.res;
                     }

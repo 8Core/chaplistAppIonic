@@ -8,7 +8,7 @@
             <div class="list half">
                 <div class="card card-gallery item item-text-wrap" ng-repeat="product in products" ng-last-repeat="mylist" ng-if="$odd">
                     <div align="center">
-                        <div class="ink stable-bg" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                        <div class="ink stable-bg" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
                             <h3 class="">Hasta {{ product.fecha_final | date:'dd MMMM yyyy' }}</h3>
                             <img ng-if="$parent.isOnline()" class="full-image" ng-src="http://res.cloudinary.com/oktacore/w_250,h_250,c_pad,q_25/{{product.imagenes[0]}}">
                             <img ng-if="$parent.isOffline()" class="full-image" src="img/genericProduct.jpg">
@@ -17,7 +17,7 @@
                             <a class="tab-item stable-bg energized" ng-click="addFavorite(product)">
                                 <i class="icon ion-star"></i> <b>{{product.puntuacion}}</b>
                             </a>
-                            <a class="tab-item stable-bg balanced-900" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                            <a class="tab-item stable-bg balanced-900" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
                                 <b><p>Q. {{product.precio_oferta}}</p></b>
                             </a>
                         </div>
@@ -28,7 +28,7 @@
                 <div class="card card-gallery item item-text-wrap" ng-repeat="product in products" ng-last-repeat="mylist" ng-if="$even">
 
                     <div align="center">
-                        <div class="ink stable-bg" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                        <div class="ink stable-bg" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
                             <h3 class="">Hasta {{ product.fecha_final | date:'dd MMMM yyyy' }}</h3>
                             <img ng-if="$parent.isOnline()" class="full-image" ng-src="http://res.cloudinary.com/oktacore/w_250,h_250,c_pad,q_50/{{product.imagenes[0]}}">
                             <img ng-if="$parent.isOffline()" class="full-image" src="img/genericProduct.jpg">
@@ -37,7 +37,7 @@
                             <a class="tab-item stable-bg energized" ng-click="addFavorite(product)">
                                 <i class="icon ion-star"></i> <b>{{product.puntuacion}}</b>
                             </a>
-                            <a class="tab-item stable-bg balanced-900" ng-click="setProductDetail(product)" ui-sref="app.detalle">
+                            <a class="tab-item stable-bg balanced-900" ng-click="setProductId(product.id_oferta)" ui-sref="app.detalle">
                                 <b><p>Q. {{product.precio_oferta}}</p></b>
                             </a>
                         </div>

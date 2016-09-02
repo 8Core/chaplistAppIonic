@@ -185,8 +185,11 @@ angular.module('offerCtrl', [])
     ionicMaterialInk.displayEffect();
     //////////////////////////////////////////////////////////////////////////////////////
     $scope.favorites = [];
-    $scope.productDetail = offerFactory.getProductDetail();
 
+    offerFactory.getProductDetail().then(function(data){
+     $scope.productDetail = data[0];
+        console.log($scope.productDetail);
+    });
     $scope.$watch('$viewContentLoaded', function () {
         $scope.fav = offerFactory.addFavorite($scope.productDetail, false);
     });
